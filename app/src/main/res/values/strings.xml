@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">NASA-Mars-API-Service</string>
+    <string name="sol">Sol:</string>
+    <string name="earth_date">Earth Date:</string>
+    <string name="camera">Camera:</string>
+    <string name="rover">Rover:</string>
 </resources>

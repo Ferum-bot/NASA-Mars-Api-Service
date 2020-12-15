@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="autoSizeMinTextSizeTextView">5sp</dimen>
+    <dimen name="autoSizeMaxTextSizeTextView">100sp</dimen>
+    <dimen name="autoSizeStepTextView">5sp</dimen>
+</resources>

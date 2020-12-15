@@ -4,12 +4,8 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
-
-private const val TABLE_NAME = "mars_photo_table"
-
-@Entity(tableName = TABLE_NAME,)
+@Entity(tableName = "mars_photo_table")
 data class MarsPhotoDB(
-
     @PrimaryKey
     val id: Int = 0,
 

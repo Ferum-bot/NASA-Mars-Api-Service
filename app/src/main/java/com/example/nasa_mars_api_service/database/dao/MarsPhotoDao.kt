@@ -29,7 +29,7 @@ interface MarsPhotoDao {
     suspend fun getAllPhotos(): List<MarsPhotoDB>
 
     @Query("SELECT * FROM $TABLE_NAME WHERE id = :id LIMIT 1")
-    suspend fun getPhoto(id: Int)
+    suspend fun getPhoto(id: Int): MarsPhotoDB
 
     companion object {
         private const val TABLE_NAME = "mars_photo_table"

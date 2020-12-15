@@ -1,5 +1,6 @@
 package com.example.nasa_mars_api_service.network.api
 
+import com.example.nasa_mars_api_service.network.models.MarsPhotoVO
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import retrofit2.Retrofit
@@ -33,7 +34,7 @@ interface MarsPhotosService {
 
         @Query("api_key")
         apiKey: String = API_KEY
-    )
+    ): List<MarsPhotoVO>
 
 }
 

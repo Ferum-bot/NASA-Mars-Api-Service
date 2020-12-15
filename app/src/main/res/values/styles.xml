@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="DefaultStyleForTextView">
+        <item name="android:textSize">18sp</item>
+        <item name="android:textColor">@android:color/black</item>
+        <item name="android:layout_marginStart">4dp</item>
+        <item name="android:layout_marginEnd">4dp</item>
+        <item name="autoSizeMinTextSize">@dimen/autoSizeMinTextSizeTextView</item>
+        <item name="autoSizeMaxTextSize">@dimen/autoSizeMaxTextSizeTextView</item>
+        <item name="autoSizeStepGranularity">@dimen/autoSizeStepTextView</item>
+    </style>
+</resources>
