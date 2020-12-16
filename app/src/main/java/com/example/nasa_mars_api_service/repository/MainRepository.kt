@@ -1,10 +1,14 @@
 package com.example.nasa_mars_api_service.repository
 
+import android.util.Log
+import com.example.nasa_mars_api_service.core.add
 import com.example.nasa_mars_api_service.core.models.MarsPhoto
+import com.example.nasa_mars_api_service.core.toDeletedMarsPhotoDB
 import com.example.nasa_mars_api_service.core.toMarsPhoto
 import com.example.nasa_mars_api_service.core.toMarsPhotoDB
 import com.example.nasa_mars_api_service.database.dao.DeletedMarsPhotoDao
 import com.example.nasa_mars_api_service.database.dao.MarsPhotoDao
+import com.example.nasa_mars_api_service.database.entities.DeletedMarsPhotoDB
 import com.example.nasa_mars_api_service.network.api.MarsPhotosService
 import com.example.nasa_mars_api_service.preferences.AppPreferences
 
@@ -21,8 +25,12 @@ class MainRepository(
     val numberOfAvailablePhotos: Int
     get() = preferences.getNumberOfAvailablePhotos()
 
+    private var deletedPhotosList: MutableList<DeletedMarsPhotoDB> = mutableListOf()
+
+
     suspend fun getPhotosFromNetwork(page: Int): List<MarsPhoto> {
-        val result = remoteSource.getMarsPhotos(page)
+        getAllDeletedPhotos()
+        val result = remoteSource.getMarsPhotos(page).listPhotos
         val list = result.map { it.toMarsPhotoDB() }
 
         localSource.updatePhotos(list)
@@ -31,17 +39,23 @@ class MainRepository(
         return list.map { it.toMarsPhoto() }
     }
 
-    suspend fun getAllPhotosFromDatabase(): List<MarsPhoto> {
-        val result = localSource.getAllPhotos()
-        return result.map { it.toMarsPhoto() }
+    suspend fun deleteMarsPhoto(photo: MarsPhoto) {
+        val currentNumberOfPhotos = preferences.getNumberOfAvailablePhotos()
+        preferences.updateNumberOfAvailablePhotos(currentNumberOfPhotos - 1)
+        val deletedMarsPhotoDB = photo.toDeletedMarsPhotoDB()
+        localSourceDeleted.insertPhoto(deletedMarsPhotoDB)
+        localSource.deletePhoto(photo.toMarsPhotoDB())
     }
 
-    suspend fun updatePhotos(page: Int) {
-        val result = remoteSource.getMarsPhotos(page)
-        val list = result.map { it.toMarsPhotoDB() }
+    suspend fun getAllDeletedPhotos() {
+        val result = localSourceDeleted.getAllDeletedPhoto()
+        deletedPhotosList = result.toMutableList()
+    }
 
-        localSource.updatePhotos(list)
-        updatePreferences(page)
+    suspend fun getAllPhotosFromDatabase(): List<MarsPhoto> {
+        getAllDeletedPhotos()
+        val result = localSource.getAllPhotos()
+        return result.map { it.toMarsPhoto() }
     }
 
     private fun updatePreferences(page: Int) {

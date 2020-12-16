@@ -14,8 +14,19 @@ class ItemListAdapter(
     }
 
     override fun onBindViewHolder(holder: ItemViewHolder, position: Int) {
+        val numberOfAvailablePhotos = viewModel.listOfPhotos.value?.size ?: 0
+        if (numberOfAvailablePhotos <= position) {
+            holder.bind(MarsPhoto())
+            return
+        }
+
         val photo = viewModel.listOfPhotos.value!![position]
         holder.bind(photo)
+
+        if (numberOfAvailablePhotos - position == 5) {
+            val numberOfAvailablePages = viewModel.numberOfAvailablePages
+            viewModel.getPhotosFromNetwork(numberOfAvailablePages + 1)
+        }
     }
 
 }

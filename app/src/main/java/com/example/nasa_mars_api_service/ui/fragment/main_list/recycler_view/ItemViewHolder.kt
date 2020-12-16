@@ -15,7 +15,19 @@ class ItemViewHolder private constructor(private val binding: FragmentMainListIt
 
     init {
         binding.marsPhoto = marsPhoto
+        setOnClickListeners()
         binding.executePendingBindings()
+    }
+
+    private fun setOnClickListeners() {
+        binding.imageView.setOnLongClickListener {
+            viewModel.deletePhoto(binding.marsPhoto!!, layoutPosition)
+            true
+        }
+
+        binding.imageView.setOnClickListener {
+
+        }
     }
 
     fun bind(marsPhoto: MarsPhoto) {

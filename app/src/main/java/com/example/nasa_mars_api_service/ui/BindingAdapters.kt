@@ -23,10 +23,3 @@ fun bindImage(imageView: ImageView, imageUrl: String?) {
             .into(imageView)
     }
 }
-
-@BindingAdapter("text")
-fun bindTextView(textView: TextView, string: String?) {
-    when(textView.id) {
-
-    }
-}

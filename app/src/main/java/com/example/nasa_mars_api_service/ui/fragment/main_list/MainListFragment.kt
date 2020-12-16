@@ -54,13 +54,23 @@ class MainListFragment: Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        setOnClickListeners()
+        setObservable()
+        getStartPhotosOrIssue()
     }
 
     private fun setOnClickListeners() {
         binding.refreshLayout.setOnRefreshListener {
+            binding.refreshLayout.isRefreshing = true
             if (Variables.isNetworkConnectionAvailable) {
-                binding.refreshLayout.isRefreshing = true
-
+                if (viewModel.numberOfAvailablePhotos == 0) {
+                    val availablePages = viewModel.numberOfAvailablePages
+                    viewModel.getPhotosFromNetwork(availablePages + 1)
+                }
+                else {
+                    viewModel.updateAllPhotos()
+                }
+                viewModel.updateAllPhotos()
             }
             else {
                 binding.refreshLayout.isRefreshing = false
@@ -109,6 +119,35 @@ class MainListFragment: Fragment() {
             }
         })
 
+        viewModel.listOfPhotos.observe(viewLifecycleOwner, Observer { newList ->
+            (binding.recyclerView.adapter as ItemListAdapter).submitList(newList)
+            (binding.recyclerView.adapter as ItemListAdapter).notifyDataSetChanged()
+        })
+
+    }
+
+    private fun getStartPhotosOrIssue() {
+        val currentAvailablePhotos = viewModel.numberOfAvailablePhotos
+        binding.refreshLayout.isRefreshing = true
+        if (!Variables.isNetworkConnectionAvailable) {
+            showNoInternetConnectionMessage()
+            if (currentAvailablePhotos == 0) {
+                showErrorImage()
+            }
+            else {
+                viewModel.getAllPhotosFromDatabase()
+            }
+            binding.refreshLayout.isRefreshing = false
+            return
+        }
+        if (currentAvailablePhotos == 0) {
+            viewModel.getPhotosFromNetwork(1)
+        }
+        else {
+            viewModel.getAllPhotosFromDatabase()
+            viewModel.updateAllPhotos()
+        }
+        binding.refreshLayout.isRefreshing = false
     }
 
     private fun showNoInternetConnectionMessage() {
