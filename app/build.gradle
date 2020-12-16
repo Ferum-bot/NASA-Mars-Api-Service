@@ -99,4 +99,7 @@ dependencies {
 
     //Material google
     implementation "com.google.android.material:material:$material_version"
+
+//    //Special Image View
+    implementation 'com.github.chrisbanes:PhotoView:2.0.0'
 }

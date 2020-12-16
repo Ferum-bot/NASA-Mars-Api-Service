@@ -36,6 +36,8 @@ class MainListViewModel(
     private val job = Job()
     private val uiScope = CoroutineScope(Dispatchers.Main + job)
 
+    var navigateEvent: MutableLiveData<Int?> = MutableLiveData(null)
+
     init {
         _errorMessage = MutableLiveData(null)
         _status = MutableLiveData(MarsApiStatus.NOT_ACTIVE)
@@ -47,6 +49,9 @@ class MainListViewModel(
         uiScope.launch {
             withContext(Dispatchers.IO) {
                 repository.deleteMarsPhoto(photo)
+                val list = _listOfPhotos.value!!
+                list.remove(photo)
+                _listOfPhotos.postValue(list)
             }
         }
     }
@@ -110,6 +115,10 @@ class MainListViewModel(
 
     fun errorMessageHasShown() {
         _errorMessage.value = null
+    }
+
+    fun navigationComplete() {
+        navigateEvent.value = null
     }
 
     override fun onCleared() {

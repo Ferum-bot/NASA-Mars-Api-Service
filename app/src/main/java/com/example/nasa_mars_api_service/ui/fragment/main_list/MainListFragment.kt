@@ -1,6 +1,7 @@
 package com.example.nasa_mars_api_service.ui.fragment.main_list
 
 import android.os.Bundle
+import android.text.Layout
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,6 +11,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import com.example.nasa_mars_api_service.R
 import com.example.nasa_mars_api_service.core.Variables
 import com.example.nasa_mars_api_service.database.db.MainDatabase
@@ -124,6 +126,14 @@ class MainListFragment: Fragment() {
             (binding.recyclerView.adapter as ItemListAdapter).notifyDataSetChanged()
         })
 
+
+        viewModel.navigateEvent.observe(viewLifecycleOwner, Observer { event ->
+            if (event != null) {
+                viewModel.navigationComplete()
+                val destination = MainListFragmentDirections.actionMainListFragmentToDescriptionFragment(event)
+                findNavController().navigate(destination)
+            }
+        })
     }
 
     private fun getStartPhotosOrIssue() {

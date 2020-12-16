@@ -54,3 +54,9 @@ fun MarsPhoto.toDeletedMarsPhotoDB(): DeletedMarsPhotoDB {
             id
     )
 }
+
+fun MarsPhotoDB.toDeletedMarsPhotoDB(): DeletedMarsPhotoDB {
+    return DeletedMarsPhotoDB(
+        id
+    )
+}

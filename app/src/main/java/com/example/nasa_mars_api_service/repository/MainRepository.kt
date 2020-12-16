@@ -31,9 +31,15 @@ class MainRepository(
     suspend fun getPhotosFromNetwork(page: Int): List<MarsPhoto> {
         getAllDeletedPhotos()
         val result = remoteSource.getMarsPhotos(page).listPhotos
-        val list = result.map { it.toMarsPhotoDB() }
+        val list = result
+            .map {
+                it.toMarsPhotoDB()
+            }
+            .filter {
+                !deletedPhotosList.contains(it.toDeletedMarsPhotoDB())
+            }
 
-        localSource.updatePhotos(list)
+        localSource.insertPhotos(list)
         updatePreferences(page)
 
         return list.map { it.toMarsPhoto() }
@@ -45,6 +51,7 @@ class MainRepository(
         val deletedMarsPhotoDB = photo.toDeletedMarsPhotoDB()
         localSourceDeleted.insertPhoto(deletedMarsPhotoDB)
         localSource.deletePhoto(photo.toMarsPhotoDB())
+        deletedPhotosList.add(deletedMarsPhotoDB)
     }
 
     suspend fun getAllDeletedPhotos() {
@@ -55,7 +62,14 @@ class MainRepository(
     suspend fun getAllPhotosFromDatabase(): List<MarsPhoto> {
         getAllDeletedPhotos()
         val result = localSource.getAllPhotos()
+        Log.i("repo", "${result.size}")
         return result.map { it.toMarsPhoto() }
+    }
+
+    suspend fun getPhoto(id: Int): MarsPhoto {
+        Log.i("repos", "$id")
+        val result = localSource.getPhoto(id)
+        return result.toMarsPhoto()
     }
 
     private fun updatePreferences(page: Int) {
