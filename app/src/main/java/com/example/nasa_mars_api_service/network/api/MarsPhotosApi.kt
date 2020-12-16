@@ -12,7 +12,7 @@ import retrofit2.http.Query
 private const val BASE_URL = "https://api.nasa.gov/mars-photos/api/v1/rovers/curiosity/"
 
 private const val PHOTOS = "photos"
-private const val API_KEY = "rfPo4emxfjb9suRkxmQbmCEm45IDF7s4Q5KcQ32n"
+private const val API_KEY = "JjTahPnWKWIeylKeBRAbkVAbLMlYWKxFu1l0ukCU"
 
 private val moshi = Moshi.Builder()
     .add(KotlinJsonAdapterFactory())
