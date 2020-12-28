@@ -4,4 +4,6 @@
     <string name="earth_date">Earth Date:</string>
     <string name="camera">Camera:</string>
     <string name="rover">Rover:</string>
+    <string name="picture_of_the_day">Picture of the Day:</string>
+    <string name="search">Search</string>
 </resources>

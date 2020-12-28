@@ -1,10 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
-<navigation xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto" android:id="@+id/navigation_main"
+<navigation
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/navigation_main"
     app:startDestination="@id/mainListFragment">
 
     <fragment
         android:id="@+id/mainListFragment"
         android:name="com.example.nasa_mars_api_service.ui.fragment.main_list.MainListFragment"
-        android:label="MainListFragment" />
+        android:label="MainListFragment" >
+        <action
+            android:id="@+id/action_mainListFragment_to_descriptionFragment"
+            app:destination="@id/descriptionFragment"
+            app:enterAnim="@anim/fragment_fade_enter"
+            app:exitAnim="@anim/fragment_fade_exit"
+            app:popEnterAnim="@anim/fragment_open_enter"
+            app:popExitAnim="@anim/fragment_open_exit" />
+    </fragment>
+    <fragment
+        android:id="@+id/descriptionFragment"
+        android:name="com.example.nasa_mars_api_service.ui.fragment.description.DescriptionFragment"
+        android:label="DescriptionFragment" >
+        <argument
+            android:name="idPhoto"
+            app:argType="integer"
+            android:defaultValue="0" />
+    </fragment>
 </navigation>

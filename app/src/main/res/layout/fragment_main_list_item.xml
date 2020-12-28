@@ -9,134 +9,73 @@
             type="com.example.nasa_mars_api_service.core.models.MarsPhoto" />
     </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/material_card_view_layout"
+        android:layout_width="120dp"
+        android:layout_height="120dp"
+
+        android:checkable="true"
+        android:clickable="true"
+        android:focusable="true"
+
         android:layout_margin="8dp"
-        android:background="@android:color/holo_blue_light">
 
-        <ImageView
-            android:id="@+id/imageView"
-            android:layout_width="200dp"
-            android:layout_height="200dp"
-            android:layout_marginEnd="4dp"
+        app:cardElevation="2dp"
+        app:strokeColor="@color/stroke_color"
+        app:cardCornerRadius="10dp"
+        app:strokeWidth="3dp"
 
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:imageUrl="@{mars_photo.imageSrc}"
+        >
 
-            tools:srcCompat="@tools:sample/avatars" />
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/sol_label"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/sol"
+            <ImageView
+                android:id="@+id/image_view"
+                android:layout_width="match_parent"
+                android:layout_height="90dp"
+                android:scaleType="centerCrop"
 
-            app:layout_constraintStart_toEndOf="@id/imageView"
-            app:layout_constraintTop_toTopOf="@id/imageView"
-            app:layout_constraintBottom_toTopOf="@id/earth_date_label"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
 
-            style="@style/DefaultStyleForTextView"
-            />
+                tools:srcCompat="@tools:sample/avatars" />
 
-        <TextView
-            android:id="@+id/sol_text_view"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:text="@{mars_photo.solDate}"
+            <TextView
+                android:id="@+id/sol_text_view"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:fontFamily="@font/allerta"
 
-            app:layout_constraintStart_toEndOf="@id/sol_label"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@id/sol_label"
+                android:textColor="@color/black"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/add_to_favorite_image"
+                app:layout_constraintStart_toStartOf="parent"
 
-            style="@style/DefaultStyleForTextView"
+                app:layout_constraintTop_toBottomOf="@id/image_view"
+                tools:text="Sol: 1000" />
 
-            tools:text="1000"
-            />
+            <ImageView
+                android:id="@+id/add_to_favorite_image"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
 
-        <TextView
-            android:id="@+id/earth_date_label"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/earth_date"
+                app:layout_constraintTop_toBottomOf="@id/image_view"
+                app:layout_constraintStart_toEndOf="@id/sol_text_view"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
 
-            app:layout_constraintTop_toBottomOf="@id/sol_label"
-            app:layout_constraintStart_toEndOf="@id/imageView"
-            app:layout_constraintBottom_toTopOf="@id/camera_label"
+                tools:srcCompat="@drawable/ic_star"
+                />
 
-            style="@style/DefaultStyleForTextView"
-            />
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <TextView
-            android:id="@+id/earth_date_text_view"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:text="@{mars_photo.earthDate}"
 
-            app:layout_constraintStart_toEndOf="@id/earth_date_label"
-            app:layout_constraintTop_toTopOf="@id/earth_date_label"
-            app:layout_constraintEnd_toEndOf="parent"
+    </com.google.android.material.card.MaterialCardView>
 
-            style="@style/DefaultStyleForTextView"
-
-            tools:text="16.12.2020"
-            />
-
-        <TextView
-            android:id="@+id/camera_label"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/camera"
-
-            app:layout_constraintTop_toBottomOf="@id/earth_date_label"
-            app:layout_constraintStart_toEndOf="@id/imageView"
-            app:layout_constraintBottom_toTopOf="@id/rover_label"
-
-            style="@style/DefaultStyleForTextView"
-            />
-
-        <TextView
-            android:id="@+id/camera_text_view"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:text="@{mars_photo.cameraName}"
-
-            app:layout_constraintStart_toEndOf="@id/camera_label"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@id/camera_label"
-
-            style="@style/DefaultStyleForTextView"
-
-            tools:text="FHAZ"
-            />
-
-        <TextView
-            android:id="@+id/rover_label"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/rover"
-
-            app:layout_constraintTop_toBottomOf="@id/camera_label"
-            app:layout_constraintStart_toEndOf="@id/imageView"
-            app:layout_constraintBottom_toBottomOf="@id/imageView"
-
-            style="@style/DefaultStyleForTextView"
-            />
-
-        <TextView
-            android:id="@+id/rover_text_view"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:text="@{mars_photo.roverName}"
-
-            app:layout_constraintStart_toEndOf="@id/rover_label"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@id/rover_label"
-
-            style="@style/DefaultStyleForTextView"
-
-            tools:text="Curiosity"
-            />
-    </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
