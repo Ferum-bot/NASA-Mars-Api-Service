@@ -4,26 +4,105 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/navigation_main"
     app:startDestination="@id/mainListFragment">
-
     <fragment
         android:id="@+id/mainListFragment"
         android:name="com.example.nasa_mars_api_service.ui.fragment.main_list.MainListFragment"
         android:label="MainListFragment" >
         <action
-            android:id="@+id/action_mainListFragment_to_descriptionFragment"
-            app:destination="@id/descriptionFragment"
-            app:enterAnim="@anim/fragment_fade_enter"
-            app:exitAnim="@anim/fragment_fade_exit"
-            app:popEnterAnim="@anim/fragment_open_enter"
-            app:popExitAnim="@anim/fragment_open_exit" />
+            android:id="@+id/action_mainListFragment_to_searchMarsPhotoFragment"
+            app:destination="@id/searchMarsPhotoFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim"
+            app:popUpTo="@id/mainListFragment"/>
+        <action
+            android:id="@+id/action_mainListFragment_to_imageOfDayFragment"
+            app:destination="@id/imageOfDayFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim"
+            app:popUpTo="@id/mainListFragment"/>
+        <action
+            android:id="@+id/action_mainListFragment_to_marsPhotoDescriptionFragment"
+            app:destination="@id/marsPhotoDescriptionFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim"
+            app:popUpTo="@id/mainListFragment"/>
+        <action
+            android:id="@+id/action_mainListFragment_to_photoViewFragment"
+            app:destination="@id/photoViewFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim"
+            app:popUpTo="@id/mainListFragment"/>
     </fragment>
     <fragment
-        android:id="@+id/descriptionFragment"
-        android:name="com.example.nasa_mars_api_service.ui.fragment.description.DescriptionFragment"
-        android:label="DescriptionFragment" >
-        <argument
-            android:name="idPhoto"
-            app:argType="integer"
-            android:defaultValue="0" />
+        android:id="@+id/imageOfDayFragment"
+        android:name="com.example.nasa_mars_api_service.ui.fragment.image_of_day_description.ImageOfDayFragment"
+        android:label="ImageOfDayFragment" >
+        <action
+            android:id="@+id/action_imageOfDayFragment_to_photoViewFragment"
+            app:destination="@id/photoViewFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim"
+            app:popUpTo="@id/imageOfDayFragment"/>
+    </fragment>
+    <fragment
+        android:id="@+id/marsPhotoDescriptionFragment"
+        android:name="com.example.nasa_mars_api_service.ui.fragment.mars_photo_description.MarsPhotoDescriptionFragment"
+        android:label="MarsPhotoDescriptionFragment">
+        <action
+            android:id="@+id/action_marsPhotoDescriptionFragment_to_photoViewFragment"
+            app:destination="@id/photoViewFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim"
+            app:popUpTo="@id/marsPhotoDescriptionFragment"/>
+    </fragment>
+    <fragment
+        android:id="@+id/photoViewFragment"
+        android:name="com.example.nasa_mars_api_service.ui.fragment.photo_view.PhotoViewFragment"
+        android:label="PhotoViewFragment" />
+    <fragment
+        android:id="@+id/searchMarsPhotoFragment"
+        android:name="com.example.nasa_mars_api_service.ui.fragment.search.SearchMarsPhotoFragment"
+        android:label="SearchMarsPhotoFragment" >
+        <action
+            android:id="@+id/action_searchMarsPhotoFragment_to_searchListFragment"
+            app:destination="@id/searchListFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim"
+            app:popUpTo="@id/mainListFragment"/>
+    </fragment>
+    <fragment
+        android:id="@+id/searchListFragment"
+        android:name="com.example.nasa_mars_api_service.ui.fragment.search_list.SearchListFragment"
+        android:label="SearchListFragment" >
+        <action
+            android:id="@+id/action_searchListFragment_to_marsPhotoDescriptionFragment"
+            app:destination="@id/marsPhotoDescriptionFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim"
+            app:popUpTo="@id/searchListFragment"/>
+        <action
+            android:id="@+id/action_searchListFragment_to_photoViewFragment"
+            app:destination="@id/photoViewFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim"
+            app:popUpTo="@id/searchListFragment"/>
     </fragment>
 </navigation>

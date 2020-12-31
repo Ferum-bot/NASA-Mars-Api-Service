@@ -1,9 +1,25 @@
 <resources>
     <string name="app_name">NASA-Mars-API-Service</string>
     <string name="sol">Sol:</string>
-    <string name="earth_date">Earth Date:</string>
-    <string name="camera">Camera:</string>
     <string name="rover">Rover:</string>
     <string name="picture_of_the_day">Picture of the Day:</string>
     <string name="search">Search</string>
+    <string name="add_to_favorite">Add to Favorite</string>
+    <string name="mars_photo">Mars Photo</string>
+    <string name="mars_sol">Mars Sol:</string>
+    <string name="earth_date">Earth Date:</string>
+    <string name="mars_rover">Mars Rover:</string>
+    <string name="camera">Camera:</string>
+    <string name="landing_date">Landing Date:</string>
+    <string name="launch_date">Launch Date:</string>
+    <string name="status">Status:</string>
+    <string name="author">Author:</string>
+    <string name="title">Title</string>
+    <string name="description">Description</string>
+    <string name="title1">Title:</string>
+    <string name="date">Date:</string>
+    <string name="search_mars_photo">Search Mars Photos</string>
+    <string name="choose_date">Choose Date</string>
+    <string name="choose_rover">Choose Rover</string>
+    <string name="choose_camera">Choose Camera</string>
 </resources>

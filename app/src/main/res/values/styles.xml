@@ -9,4 +9,30 @@
         <item name="autoSizeMaxTextSize">@dimen/autoSizeMaxTextSizeTextView</item>
         <item name="autoSizeStepGranularity">@dimen/autoSizeStepTextView</item>
     </style>
+
+
+    <style name="BaseStyleForTextView">
+        <item name="android:textColor">@android:color/black</item>
+        <item name="fontFamily">@font/allerta</item>
+    </style>
+
+    <style name="BaseStyleForDescriptionFragmentTextView" parent="BaseStyleForTextView">
+        <item name="android:textSize">20sp</item>
+        <item name="android:layout_marginStart">4dp</item>
+    </style>
+
+    <style name="BaseStyleForImageView">
+        <item name="android:scaleType">centerCrop</item>
+    </style>
+
+    <style name="BaseStyleForButtons">
+        <item name="fontFamily">@font/allerta</item>
+        <item name="textAllCaps">false</item>
+    </style>
+
+    <style name="BaseStyleForSearchFragmentButtons" parent="BaseStyleForButtons">
+        <item name="android:textSize">20sp</item>
+        <item name="android:layout_marginStart">8dp</item>
+        <item name="android:layout_marginEnd">8dp</item>
+    </style>
 </resources>
