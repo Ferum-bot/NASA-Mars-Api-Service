@@ -1,4 +1,4 @@
-package com.example.nasa_mars_api_service.preferences
+package com.example.nasa_mars_api_service.preferences.implementations
 
 import android.content.Context
 import android.content.SharedPreferences

@@ -7,7 +7,7 @@ import androidx.lifecycle.ViewModel
 import com.example.nasa_mars_api_service.core.add
 import com.example.nasa_mars_api_service.core.models.MarsPhoto
 import com.example.nasa_mars_api_service.network.MarsApiStatus
-import com.example.nasa_mars_api_service.repository.MainRepository
+import com.example.nasa_mars_api_service.repository.implementations.MainRepository
 import kotlinx.coroutines.*
 import timber.log.Timber
 

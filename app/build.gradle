@@ -86,22 +86,27 @@ dependencies {
     implementation "com.squareup.moshi:moshi:$moshi_version"
     implementation "com.squareup.moshi:moshi-kotlin:$moshi_version"
 
-    //Timber logger
+    // Timber logger
     implementation "com.jakewharton.timber:timber:$timber_version"
 
-    //Test
+    // Test
     testImplementation 'junit:junit:4.13.1'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
 
-    //Swipe refresh layout
+    // Swipe refresh layout
     implementation "androidx.swiperefreshlayout:swiperefreshlayout:$swipe_to_refresh_layout_version"
 
-    //Material google
+    // Material google
     implementation "com.google.android.material:material:$material_version"
 
-    //Special Image View
+    // Special Image View
     implementation 'com.github.chrisbanes:PhotoView:2.0.0'
 
+    // Coordinator layout
     implementation "androidx.coordinatorlayout:coordinatorlayout:1.1.0"
+
+    // Delegate Adapter
+    implementation "com.hannesdorfmann:adapterdelegates4-kotlin-dsl:$delegate_adapter_version"
+    implementation "com.hannesdorfmann:adapterdelegates4-kotlin-dsl-viewbinding:$delegate_adapter_version"
 }

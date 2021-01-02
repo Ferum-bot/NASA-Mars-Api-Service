@@ -1,7 +1,6 @@
-package com.example.nasa_mars_api_service.repository
+package com.example.nasa_mars_api_service.repository.implementations
 
 import android.util.Log
-import com.example.nasa_mars_api_service.core.add
 import com.example.nasa_mars_api_service.core.models.MarsPhoto
 import com.example.nasa_mars_api_service.core.toDeletedMarsPhotoDB
 import com.example.nasa_mars_api_service.core.toMarsPhoto
@@ -10,13 +9,13 @@ import com.example.nasa_mars_api_service.database.dao.DeletedMarsPhotoDao
 import com.example.nasa_mars_api_service.database.dao.MarsPhotoDao
 import com.example.nasa_mars_api_service.database.entities.DeletedMarsPhotoDB
 import com.example.nasa_mars_api_service.network.api.MarsPhotosService
-import com.example.nasa_mars_api_service.preferences.AppPreferences
+import com.example.nasa_mars_api_service.preferences.implementations.AppPreferences
 
 class MainRepository(
-    private val localSource: MarsPhotoDao,
-    private val localSourceDeleted: DeletedMarsPhotoDao,
-    private val remoteSource: MarsPhotosService,
-    private val preferences: AppPreferences
+        private val localSource: MarsPhotoDao,
+        private val localSourceDeleted: DeletedMarsPhotoDao,
+        private val remoteSource: MarsPhotosService,
+        private val preferences: AppPreferences
 ) {
 
     val numberOfAvailablePages: Int

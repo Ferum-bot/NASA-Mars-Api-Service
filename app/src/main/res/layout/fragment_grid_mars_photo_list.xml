@@ -4,39 +4,46 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <androidx.constraintlayout.widget.ConstraintLayout
-
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+
         android:layout_marginTop="4dp"
-        android:layout_marginBottom="4dp">
+        android:layout_marginBottom="4dp"
+        >
 
         <TextView
             android:id="@+id/title_label"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:textColor="@android:color/black"
             android:textSize="25sp"
+            android:fontFamily="@font/allerta"
+            android:text="@string/new_mars_photos"
+
             android:layout_marginStart="8dp"
 
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-
-            tools:text="Favourite Photos: " />
-
+            />
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/horizontal_recycler_view"
-            android:layout_width="match_parent"
+            android:id="@+id/grid_mars_photo_recycler_view"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
 
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            app:layout_constraintTop_toBottomOf="@id/title_label"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+
+            app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+            app:spanCount="3"
+
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/title_label"
 
-            tools:listitem="@layout/fragment_horizontal_list_item" />
+            tools:listitem="@layout/fragment_grid_mars_photo_item"
+            />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

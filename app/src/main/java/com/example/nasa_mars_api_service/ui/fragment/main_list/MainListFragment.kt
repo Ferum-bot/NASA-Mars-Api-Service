@@ -1,27 +1,24 @@
 package com.example.nasa_mars_api_service.ui.fragment.main_list
 
 import android.os.Bundle
-import android.text.Layout
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.fragment.findNavController
 import com.example.nasa_mars_api_service.R
-import com.example.nasa_mars_api_service.core.Variables
+import com.example.nasa_mars_api_service.core.models.FavouritePhoto
 import com.example.nasa_mars_api_service.core.models.MarsPhoto
 import com.example.nasa_mars_api_service.database.db.MainDatabase
 import com.example.nasa_mars_api_service.databinding.FragmentMainListBinding
-import com.example.nasa_mars_api_service.network.MarsApiStatus
 import com.example.nasa_mars_api_service.network.api.MarsPhotosApi
-import com.example.nasa_mars_api_service.preferences.AppPreferences
-import com.example.nasa_mars_api_service.repository.MainRepository
-import com.example.nasa_mars_api_service.ui.fragment.main_list.recycler_view.ItemListAdapter
+import com.example.nasa_mars_api_service.preferences.implementations.AppPreferences
+import com.example.nasa_mars_api_service.repository.implementations.MainRepository
+import com.example.nasa_mars_api_service.ui.recycler_views.adapters.MainListAdapter
+import com.example.nasa_mars_api_service.ui.recycler_views.models.GridListMarsPhotos
+import com.example.nasa_mars_api_service.ui.recycler_views.models.HorizontalFavouritePhotosListRecycler
+import com.example.nasa_mars_api_service.ui.recycler_views.models.PictureOfDayItem
 
 class MainListFragment: Fragment() {
 
@@ -48,30 +45,28 @@ class MainListFragment: Fragment() {
         val factory = MainListViewModelFactory(repository)
         viewModel = ViewModelProvider(this, factory).get(MainListViewModel::class.java)
 
-        val adapter = ItemListAdapter(viewModel)
-
-        adapter.submitList(
-            listOf(
-                MarsPhoto(),
-                MarsPhoto(),
-                MarsPhoto(),
-                MarsPhoto(),
-                MarsPhoto(),
-                MarsPhoto(),
-                MarsPhoto(),
-                MarsPhoto(),
-                MarsPhoto(),
-                MarsPhoto()
-            )
-        )
-
-        binding.mainRecyclerView.adapter = adapter
 
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        val adapter = MainListAdapter().apply {
+            items = listOf(
+                PictureOfDayItem(),
+                HorizontalFavouritePhotosListRecycler(listOfItems = listOf(
+                    FavouritePhoto(photo = MarsPhoto()), FavouritePhoto(photo = MarsPhoto()), FavouritePhoto(photo = MarsPhoto()), FavouritePhoto(photo = MarsPhoto()), FavouritePhoto(photo = MarsPhoto()),
+                    FavouritePhoto(photo = MarsPhoto()), FavouritePhoto(photo = MarsPhoto()), FavouritePhoto(photo = MarsPhoto()), FavouritePhoto(photo = MarsPhoto()), FavouritePhoto(photo = MarsPhoto()),
+                )),
+                GridListMarsPhotos(listOfPhotos = listOf(
+                    MarsPhoto(),  MarsPhoto(),  MarsPhoto(),  MarsPhoto(),  MarsPhoto(),  MarsPhoto(),  MarsPhoto(), MarsPhoto(),  MarsPhoto(),  MarsPhoto(),  MarsPhoto(),  MarsPhoto(),
+                    MarsPhoto(),  MarsPhoto(),  MarsPhoto(),  MarsPhoto(),  MarsPhoto(),  MarsPhoto(),  MarsPhoto(),  MarsPhoto(), MarsPhoto(), MarsPhoto(),  MarsPhoto(),  MarsPhoto(),
+                    MarsPhoto(),  MarsPhoto(), MarsPhoto(), MarsPhoto(),  MarsPhoto(),  MarsPhoto(), MarsPhoto(), MarsPhoto(),  MarsPhoto(),  MarsPhoto(),  MarsPhoto(),  MarsPhoto(),
+                ))
+            )
+        }
+        binding.mainRecyclerView.adapter = adapter
 
     }
 
