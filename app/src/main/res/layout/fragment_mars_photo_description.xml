@@ -43,7 +43,8 @@
                     android:id="@+id/mars_image"
                     android:layout_width="0dp"
                     android:layout_height="350dp"
-                    android:scaleType="centerCrop"
+
+                    style="@style/BaseStyleForImageView"
 
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintStart_toStartOf="parent"

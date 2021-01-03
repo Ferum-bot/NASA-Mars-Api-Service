@@ -10,16 +10,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
 
-        android:checkable="true"
-        android:clickable="true"
-        android:focusable="true"
+        style="@style/BaseStyleForCardView"
 
         android:layout_margin="8dp"
-
-        app:cardElevation="2dp"
-        app:strokeColor="@color/stroke_color"
-        app:cardCornerRadius="10dp"
-        app:strokeWidth="3dp">
+        >
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -29,20 +23,21 @@
                 android:id="@+id/image_view"
                 android:layout_width="200dp"
                 android:layout_height="200dp"
-                android:scaleType="centerCrop"
+
+                style="@style/BaseStyleForImageView"
 
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
+
                 tools:srcCompat="@tools:sample/backgrounds/scenic" />
 
             <TextView
                 android:id="@+id/mars_sol_label"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@android:color/black"
-                android:textSize="15sp"
-                android:fontFamily="@font/allerta"
                 android:text="@string/mars_sol"
+
+                style="@style/BaseStyleForSearchListItem"
 
                 android:layout_marginStart="4dp"
                 android:layout_marginTop="8dp"
@@ -55,9 +50,8 @@
                 android:id="@+id/mars_sol_text_view"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:textColor="@android:color/black"
-                android:textSize="15sp"
-                android:fontFamily="@font/allerta"
+
+                style="@style/BaseStyleForSearchListItem"
 
                 app:layout_constraintTop_toTopOf="@id/mars_sol_label"
                 app:layout_constraintStart_toStartOf="@id/earth_date_text_view"
@@ -70,10 +64,9 @@
                 android:id="@+id/earth_date_label"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@android:color/black"
-                android:textSize="15sp"
-                android:fontFamily="@font/allerta"
                 android:text="@string/earth_date"
+
+                style="@style/BaseStyleForSearchListItem"
 
                 android:layout_marginStart="4dp"
                 android:layout_marginTop="8dp"
@@ -86,9 +79,8 @@
                 android:id="@+id/earth_date_text_view"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:textColor="@android:color/black"
-                android:textSize="15sp"
-                android:fontFamily="@font/allerta"
+
+                style="@style/BaseStyleForSearchListItem"
 
                 android:layout_marginStart="8dp"
 
@@ -103,10 +95,9 @@
                 android:id="@+id/rover_label"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@android:color/black"
-                android:textSize="15sp"
-                android:fontFamily="@font/allerta"
                 android:text="@string/rover"
+
+                style="@style/BaseStyleForSearchListItem"
 
                 android:layout_marginStart="4dp"
                 android:layout_marginTop="8dp"
@@ -119,9 +110,8 @@
                 android:id="@+id/rover_text_view"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:textColor="@android:color/black"
-                android:textSize="15sp"
-                android:fontFamily="@font/allerta"
+
+                style="@style/BaseStyleForSearchListItem"
 
                 app:layout_constraintTop_toTopOf="@id/rover_label"
                 app:layout_constraintStart_toStartOf="@id/earth_date_text_view"
@@ -134,13 +124,14 @@
                 android:id="@+id/add_to_favorite_image"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:srcCompat="@drawable/ic_star"
 
                 android:layout_marginBottom="8dp"
                 android:layout_marginEnd="8dp"
 
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
+
+                app:srcCompat="@drawable/ic_star"
                 />
 
         </androidx.constraintlayout.widget.ConstraintLayout>

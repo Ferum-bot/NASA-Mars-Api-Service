@@ -12,8 +12,8 @@
 
         <ImageView
             android:id="@+id/mars_photo_image_view"
-            android:layout_width="130dp"
-            android:layout_height="130dp"
+            android:layout_width="@dimen/grid_mars_photo_item_size"
+            android:layout_height="@dimen/grid_mars_photo_item_size"
             android:scaleType="centerCrop"
 
             app:layout_constraintTop_toTopOf="parent"

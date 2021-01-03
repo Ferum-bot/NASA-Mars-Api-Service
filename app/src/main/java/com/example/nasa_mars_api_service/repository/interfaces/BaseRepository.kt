@@ -1,5 +1,13 @@
 package com.example.nasa_mars_api_service.repository.interfaces
 
+import androidx.lifecycle.LiveData
+import com.example.nasa_mars_api_service.core.enums.MarsDateTypes
+import com.example.nasa_mars_api_service.core.enums.MarsRovers
+import com.example.nasa_mars_api_service.core.enums.MarsRoversCamera
+import com.example.nasa_mars_api_service.core.models.FavouritePhoto
+import com.example.nasa_mars_api_service.core.models.MarsPhoto
+import com.example.nasa_mars_api_service.core.models.PictureOfDayPhoto
+
 /**
  * Created by Matvey Popov.
  * Date: 02.01.2021
@@ -7,5 +15,19 @@ package com.example.nasa_mars_api_service.repository.interfaces
  * Project: NASA-Mars-API-Service
  */
 interface BaseRepository {
+
+    suspend fun getPictureOfDay(): PictureOfDayPhoto
+
+    suspend fun getAllFavoritesPhotos(): LiveData<List<FavouritePhoto>>
+
+    suspend fun getAllMarsPhotosFromCache(): List<MarsPhoto>
+
+    suspend fun searchMarsPhotos(date: MarsDateTypes, rover: MarsRovers, camera: MarsRoversCamera): List<MarsPhoto>
+
+    suspend fun addPhotoToFavourite(marsPhoto: MarsPhoto)
+    suspend fun addPhotoToFavourite(pictureOfDayPhoto: PictureOfDayPhoto)
+    suspend fun addPhotoToFavourite(favouritePhoto: FavouritePhoto)
+
+    suspend fun deleteFavouritePhoto(favouritePhoto: FavouritePhoto)
 
 }

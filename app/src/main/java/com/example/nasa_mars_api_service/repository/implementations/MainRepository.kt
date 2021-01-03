@@ -1,83 +1,54 @@
 package com.example.nasa_mars_api_service.repository.implementations
 
-import android.util.Log
+import androidx.lifecycle.LiveData
+import com.example.nasa_mars_api_service.core.enums.MarsDateTypes
+import com.example.nasa_mars_api_service.core.enums.MarsRovers
+import com.example.nasa_mars_api_service.core.enums.MarsRoversCamera
+import com.example.nasa_mars_api_service.core.models.FavouritePhoto
 import com.example.nasa_mars_api_service.core.models.MarsPhoto
-import com.example.nasa_mars_api_service.core.toDeletedMarsPhotoDB
-import com.example.nasa_mars_api_service.core.toMarsPhoto
-import com.example.nasa_mars_api_service.core.toMarsPhotoDB
-import com.example.nasa_mars_api_service.database.dao.DeletedMarsPhotoDao
+import com.example.nasa_mars_api_service.core.models.PictureOfDayPhoto
 import com.example.nasa_mars_api_service.database.dao.MarsPhotoDao
-import com.example.nasa_mars_api_service.database.entities.DeletedMarsPhotoDB
 import com.example.nasa_mars_api_service.network.api.MarsPhotosService
 import com.example.nasa_mars_api_service.preferences.implementations.AppPreferences
+import com.example.nasa_mars_api_service.repository.interfaces.BaseRepository
 
 class MainRepository(
         private val localSource: MarsPhotoDao,
-        private val localSourceDeleted: DeletedMarsPhotoDao,
         private val remoteSource: MarsPhotosService,
         private val preferences: AppPreferences
-) {
+): BaseRepository {
 
-    val numberOfAvailablePages: Int
-    get() = preferences.getNumberOfAvailablePages()
-
-    val numberOfAvailablePhotos: Int
-    get() = preferences.getNumberOfAvailablePhotos()
-
-    private var deletedPhotosList: MutableList<DeletedMarsPhotoDB> = mutableListOf()
-
-
-    suspend fun getPhotosFromNetwork(page: Int): List<MarsPhoto> {
-        getAllDeletedPhotos()
-        val result = remoteSource.getMarsPhotos(page).listPhotos
-        val list = result
-            .map {
-                it.toMarsPhotoDB()
-            }
-            .filter {
-                !deletedPhotosList.contains(it.toDeletedMarsPhotoDB())
-            }
-
-        localSource.insertPhotos(list)
-        updatePreferences(page)
-
-        return list.map { it.toMarsPhoto() }
+    override suspend fun getPictureOfDay(): PictureOfDayPhoto {
+        TODO("Not yet implemented")
     }
 
-    suspend fun deleteMarsPhoto(photo: MarsPhoto) {
-        val currentNumberOfPhotos = preferences.getNumberOfAvailablePhotos()
-        preferences.updateNumberOfAvailablePhotos(currentNumberOfPhotos - 1)
-        val deletedMarsPhotoDB = photo.toDeletedMarsPhotoDB()
-        localSourceDeleted.insertPhoto(deletedMarsPhotoDB)
-        localSource.deletePhoto(photo.toMarsPhotoDB())
-        deletedPhotosList.add(deletedMarsPhotoDB)
+    override suspend fun getAllFavoritesPhotos(): LiveData<List<FavouritePhoto>> {
+        TODO("Not yet implemented")
     }
 
-    suspend fun getAllDeletedPhotos() {
-        val result = localSourceDeleted.getAllDeletedPhoto()
-        deletedPhotosList = result.toMutableList()
+    override suspend fun getAllMarsPhotosFromCache(): List<MarsPhoto> {
+        TODO("Not yet implemented")
     }
 
-    suspend fun getAllPhotosFromDatabase(): List<MarsPhoto> {
-        getAllDeletedPhotos()
-        val result = localSource.getAllPhotos()
-        Log.i("repo", "${result.size}")
-        return result.map { it.toMarsPhoto() }
+    override suspend fun searchMarsPhotos(date: MarsDateTypes, rover: MarsRovers, camera: MarsRoversCamera): List<MarsPhoto> {
+        TODO("Not yet implemented")
     }
 
-    suspend fun getPhoto(id: Int): MarsPhoto {
-        Log.i("repos", "$id")
-        val result = localSource.getPhoto(id)
-        return result.toMarsPhoto()
+    override suspend fun addPhotoToFavourite(marsPhoto: MarsPhoto) {
+        TODO("Not yet implemented")
     }
 
-    private fun updatePreferences(page: Int) {
-        val currentNumberOfPages = preferences.getNumberOfAvailablePages()
-        if (page > currentNumberOfPages) {
-            preferences.updateNumberOfAvailablePages(page)
-            val currentNumberOfPhotos = preferences.getNumberOfAvailablePhotos()
-            preferences.updateNumberOfAvailablePhotos(currentNumberOfPhotos + 25)
-        }
+    override suspend fun addPhotoToFavourite(pictureOfDayPhoto: PictureOfDayPhoto) {
+        TODO("Not yet implemented")
     }
+
+    override suspend fun addPhotoToFavourite(favouritePhoto: FavouritePhoto) {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun deleteFavouritePhoto(favouritePhoto: FavouritePhoto) {
+        TODO("Not yet implemented")
+    }
+
 
 }

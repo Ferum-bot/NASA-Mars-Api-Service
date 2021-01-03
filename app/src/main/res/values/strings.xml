@@ -42,4 +42,5 @@
     <string name="choose_rover_firstly">Choose Rover Firstly</string>
     <string name="new_mars_photos">New Mars Photos:</string>
     <string name="nasa">Nasa</string>
+    <string name="favorite_photos">Favorite Photos:</string>
 </resources>

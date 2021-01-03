@@ -1,7 +1,6 @@
 package com.example.nasa_mars_api_service.core
 
 import com.example.nasa_mars_api_service.core.models.MarsPhoto
-import com.example.nasa_mars_api_service.database.entities.DeletedMarsPhotoDB
 import com.example.nasa_mars_api_service.database.entities.MarsPhotoDB
 import com.example.nasa_mars_api_service.network.models.MarsPhotoVO
 

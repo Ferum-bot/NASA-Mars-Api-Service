@@ -14,17 +14,9 @@
         android:layout_width="120dp"
         android:layout_height="120dp"
 
-        android:checkable="true"
-        android:clickable="true"
-        android:focusable="true"
+        style="@style/BaseStyleForCardView"
 
         android:layout_margin="8dp"
-
-        app:cardElevation="2dp"
-        app:strokeColor="@color/stroke_color"
-        app:cardCornerRadius="10dp"
-        app:strokeWidth="3dp"
-
         >
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -36,7 +28,8 @@
                 android:id="@+id/image_view"
                 android:layout_width="match_parent"
                 android:layout_height="90dp"
-                android:scaleType="centerCrop"
+
+                style="@style/BaseStyleForImageView"
 
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -48,21 +41,24 @@
                 android:id="@+id/sol_text_view"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:fontFamily="@font/allerta"
 
-                android:textColor="@color/black"
+                style="@style/BaseStyleForTextView"
+
+                android:layout_marginStart="8dp"
+
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@id/add_to_favorite_image"
                 app:layout_constraintStart_toStartOf="parent"
-
                 app:layout_constraintTop_toBottomOf="@id/image_view"
+
+
                 tools:text="Sol: 1000" />
 
             <ImageView
                 android:id="@+id/add_to_favorite_image"
                 android:layout_width="20dp"
                 android:layout_height="20dp"
+
                 android:layout_marginEnd="8dp"
 
                 app:layout_constraintTop_toBottomOf="@id/image_view"

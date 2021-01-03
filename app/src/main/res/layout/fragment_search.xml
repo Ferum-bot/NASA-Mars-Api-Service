@@ -38,13 +38,10 @@
                 android:id="@+id/choose_date_button"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textSize="20sp"
-                android:fontFamily="@font/allerta"
-                android:textAllCaps="false"
                 android:text="@string/choose_date"
 
-                android:layout_marginStart="8dp"
-                android:layout_marginEnd="8dp"
+                style="@style/BaseStyleForSearchFragmentButtons"
+
                 android:layout_marginTop="4dp"
                 />
 
@@ -72,9 +69,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/mars_soll"
-                    android:textSize="20sp"
-                    android:textColor="@android:color/black"
-                    android:fontFamily="@font/allerta"
+
+                    style="@style/BaseStyleForDescriptionFragmentTextView"
 
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="10dp"
@@ -98,9 +94,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/earth_datee"
-                    android:textSize="20sp"
-                    android:textColor="@android:color/black"
-                    android:fontFamily="@font/allerta"
+
+                    style="@style/BaseStyleForDescriptionFragmentTextView"
 
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="20dp"
@@ -124,13 +119,9 @@
                     android:id="@+id/date_edit_text"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:maxLines="1"
-                    android:maxLength="10"
                     android:hint="@string/write_here"
-                    android:inputType="date"
 
-                    android:layout_marginStart="16dp"
-                    android:layout_marginEnd="16dp"
+                    style="@style/BaseStyleForEditText"
 
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -157,34 +148,28 @@
                     android:id="@+id/curiosity_radio_button"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:fontFamily="@font/allerta"
                     android:text="@string/curiosity"
-                    android:textColor="@android:color/black"
 
-                    android:textSize="15sp" />
+                    style="@style/BaseStyleForRadioButton"
+                    />
 
                 <RadioButton
                     android:id="@+id/opportunity_radio_button"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:fontFamily="@font/allerta"
                     android:text="@string/opportunity"
-                    android:textColor="@color/black"
 
-                    android:textSize="15sp" />
+                    style="@style/BaseStyleForRadioButton"
+                    />
 
                 <RadioButton
                     android:id="@+id/spirit_radio_button"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:fontFamily="@font/allerta"
                     android:text="@string/spirit"
-                    android:textColor="@color/black"
 
-                    android:textSize="15sp" />
+                    style="@style/BaseStyleForRadioButton"
+                    />
 
             </RadioGroup>
 
@@ -208,107 +193,80 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/fhaz"
-                    android:textSize="15sp"
-                    android:textColor="@color/black"
-                    android:fontFamily="@font/allerta"
 
-                    android:layout_marginStart="8dp"
+                    style="@style/BaseStyleForRadioButton"
                     />
 
                 <RadioButton
                     android:id="@+id/RHAZ_radio_button"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="15sp"
-                    android:textColor="@color/black"
-                    android:fontFamily="@font/allerta"
                     android:text="@string/rhaz"
 
-                    android:layout_marginStart="8dp"
+                    style="@style/BaseStyleForRadioButton"
                     />
 
                 <RadioButton
                     android:id="@+id/MAST_radio_button"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="15sp"
-                    android:textColor="@color/black"
-                    android:fontFamily="@font/allerta"
                     android:text="@string/mast"
 
-                    android:layout_marginStart="8dp"
+                    style="@style/BaseStyleForRadioButton"
                     />
 
                 <RadioButton
                     android:id="@+id/CHEMCAM_radio_button"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="15sp"
-                    android:textColor="@color/black"
-                    android:fontFamily="@font/allerta"
                     android:text="@string/chemcam"
 
-                    android:layout_marginStart="8dp"
+                    style="@style/BaseStyleForRadioButton"
                     />
 
                 <RadioButton
                     android:id="@+id/MAHLI_radio_button"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="15sp"
-                    android:textColor="@color/black"
-                    android:fontFamily="@font/allerta"
                     android:text="@string/mahli"
 
-                    android:layout_marginStart="8dp"
+                    style="@style/BaseStyleForRadioButton"
                     />
 
                 <RadioButton
                     android:id="@+id/MARDI_radio_button"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="15sp"
-                    android:textColor="@color/black"
-                    android:fontFamily="@font/allerta"
                     android:text="@string/mardi"
 
-                    android:layout_marginStart="8dp"
+                    style="@style/BaseStyleForRadioButton"
                     />
 
                 <RadioButton
                     android:id="@+id/NAVCAM_radio_button"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="15sp"
-                    android:textColor="@color/black"
-                    android:fontFamily="@font/allerta"
                     android:text="@string/navcam"
 
-                    android:layout_marginStart="8dp"
+                    style="@style/BaseStyleForRadioButton"
                     />
 
                 <RadioButton
                     android:id="@+id/PANCAM_radio_button"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="15sp"
-                    android:textColor="@color/black"
-                    android:fontFamily="@font/allerta"
                     android:text="@string/pancam"
 
-                    android:layout_marginStart="8dp"
+                    style="@style/BaseStyleForRadioButton"
                     />
 
                 <RadioButton
                     android:id="@+id/MINITES_radio_button"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="15sp"
-                    android:textColor="@color/black"
-                    android:fontFamily="@font/allerta"
                     android:text="@string/minites"
 
-                    android:layout_marginStart="8dp"
+                    style="@style/BaseStyleForRadioButton"
                     />
 
             </RadioGroup>
@@ -321,8 +279,6 @@
 
                 style="@style/BaseStyleForSearchFragmentButtons"
 
-                android:layout_marginStart="8dp"
-                android:layout_marginEnd="8dp"
                 android:layout_marginBottom="8dp"
                 />
 

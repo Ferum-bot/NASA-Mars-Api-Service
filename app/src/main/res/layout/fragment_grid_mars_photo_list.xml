@@ -15,12 +15,9 @@
             android:id="@+id/title_label"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:textColor="@android:color/black"
-            android:textSize="25sp"
-            android:fontFamily="@font/allerta"
             android:text="@string/new_mars_photos"
 
-            android:layout_marginStart="8dp"
+            style="@style/BaseStyleForTitleMainListTextView"
 
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
