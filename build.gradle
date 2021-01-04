@@ -23,6 +23,7 @@ buildscript {
         material_version = "1.2.1"
         touch_image_view_viersion = "3.0.1"
         delegate_adapter_version = "4.3.0"
+        okhttp_logger_version = "4.9.0"
     }
 
     repositories {

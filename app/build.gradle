@@ -109,4 +109,7 @@ dependencies {
     // Delegate Adapter
     implementation "com.hannesdorfmann:adapterdelegates4-kotlin-dsl:$delegate_adapter_version"
     implementation "com.hannesdorfmann:adapterdelegates4-kotlin-dsl-viewbinding:$delegate_adapter_version"
+
+    // Okhttp logger
+    implementation "com.squareup.okhttp3:logging-interceptor:$okhttp_logger_version"
 }

@@ -39,11 +39,11 @@ class MainListFragment: Fragment() {
         val database = MainDatabase.getInstance(appContext)
         val preferences = AppPreferences.getInstance(appContext)
 
-        val repository = MainRepository(database.marsPhotoDao, database.deletedMarsPhotoDao,
-            MarsPhotosApi.marsPhotosService, preferences)
-
-        val factory = MainListViewModelFactory(repository)
-        viewModel = ViewModelProvider(this, factory).get(MainListViewModel::class.java)
+//        val repository = MainRepository(database.marsPhotoDao, database.deletedMarsPhotoDao,
+//            MarsPhotosApi.marsPhotosService, preferences)
+//
+//        val factory = MainListViewModelFactory(repository)
+//        viewModel = ViewModelProvider(this, factory).get(MainListViewModel::class.java)
 
 
         return binding.root

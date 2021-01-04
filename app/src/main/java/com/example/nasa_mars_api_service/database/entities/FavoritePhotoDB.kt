@@ -3,7 +3,9 @@ package com.example.nasa_mars_api_service.database.entities
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import androidx.room.TypeConverters
 import com.example.nasa_mars_api_service.core.enums.PhotoTypes
+import com.example.nasa_mars_api_service.database.converters.FavoritePhotoConverter
 
 /**
  * Created by Matvey Popov.
@@ -12,6 +14,7 @@ import com.example.nasa_mars_api_service.core.enums.PhotoTypes
  * Project: NASA-Mars-API-Service
  */
 @Entity(tableName = "favorite_photo_table")
+@TypeConverters(value = [FavoritePhotoConverter::class])
 data class FavoritePhotoDB(
     @PrimaryKey
     val id: Int = 0,

@@ -1,6 +1,7 @@
 package com.example.nasa_mars_api_service.ui.recycler_views.delegates
 
 import android.graphics.Color
+import com.bumptech.glide.Glide
 import com.example.nasa_mars_api_service.R
 import com.example.nasa_mars_api_service.core.models.FavouritePhoto
 import com.example.nasa_mars_api_service.core.models.MarsPhoto
@@ -66,6 +67,7 @@ object MainListDelegates {
 
                 //Add Glide
                 binding.pictureOfTheDayImageView.setBackgroundColor(Color.RED)
+
             }
         }
 

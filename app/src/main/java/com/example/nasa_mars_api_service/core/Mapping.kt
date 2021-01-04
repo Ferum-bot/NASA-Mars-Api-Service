@@ -47,15 +47,3 @@ fun MarsPhoto.toMarsPhotoDB(): MarsPhotoDB {
         roverName
     )
 }
-
-fun MarsPhoto.toDeletedMarsPhotoDB(): DeletedMarsPhotoDB {
-    return DeletedMarsPhotoDB(
-            id
-    )
-}
-
-fun MarsPhotoDB.toDeletedMarsPhotoDB(): DeletedMarsPhotoDB {
-    return DeletedMarsPhotoDB(
-        id
-    )
-}

@@ -27,11 +27,11 @@ class MainListViewModel(
     val listOfPhotos: LiveData<MutableList<MarsPhoto>>
     get() = _listOfPhotos
 
-    val numberOfAvailablePhotos: Int
-    get() = repository.numberOfAvailablePhotos
-
-    val numberOfAvailablePages: Int
-    get() = repository.numberOfAvailablePages
+//    val numberOfAvailablePhotos: Int
+//    get() = repository.numberOfAvailablePhotos
+//
+//    val numberOfAvailablePages: Int
+//    get() = repository.numberOfAvailablePages
 
     private val job = Job()
     private val uiScope = CoroutineScope(Dispatchers.Main + job)
@@ -42,75 +42,6 @@ class MainListViewModel(
         _errorMessage = MutableLiveData(null)
         _status = MutableLiveData(MarsApiStatus.NOT_ACTIVE)
         _listOfPhotos = MutableLiveData(mutableListOf())
-    }
-
-    fun deletePhoto(photo: MarsPhoto, pos: Int) {
-        _listOfPhotos.value!!.remove(photo)
-        uiScope.launch {
-            withContext(Dispatchers.IO) {
-                repository.deleteMarsPhoto(photo)
-                val list = _listOfPhotos.value!!
-                list.remove(photo)
-                _listOfPhotos.postValue(list)
-            }
-        }
-    }
-
-    fun updateAllPhotos() {
-        uiScope.launch {
-            withContext(Dispatchers.IO) {
-                try {
-                    _status.postValue(MarsApiStatus.LOADING)
-                    val listToPost: MutableList<MarsPhoto> = mutableListOf()
-                    for (page in 1..numberOfAvailablePhotos) {
-                        val result = repository.getPhotosFromNetwork(page)
-                        listToPost.add(result)
-                    }
-                    _status.postValue(MarsApiStatus.DONE)
-                    _listOfPhotos.postValue(listToPost)
-                }
-                catch (ex: Exception) {
-                    _status.postValue(MarsApiStatus.ERROR)
-                    Timber.e(ex)
-                    _errorMessage.postValue(ex.message)
-                }
-            }
-        }
-    }
-
-    fun getPhotosFromNetwork(page: Int) {
-        uiScope.launch {
-            withContext(Dispatchers.IO) {
-                try {
-                    _status.postValue(MarsApiStatus.LOADING)
-                    val result = repository.getPhotosFromNetwork(page)
-                    _status.postValue(MarsApiStatus.DONE)
-                    if (_listOfPhotos.value == null) {
-                        _listOfPhotos.postValue(result.toMutableList())
-                    }
-                    else {
-                        val value = _listOfPhotos.value!!
-                        value.add(result)
-                        _listOfPhotos.postValue(value)
-                    }
-                }
-                catch (ex: Exception) {
-                    _status.postValue(MarsApiStatus.ERROR)
-                    Timber.e(ex)
-                    Log.e("getPhotosFromNetwork", "${ex.message}")
-                    _errorMessage.postValue(ex.message)
-                }
-            }
-        }
-    }
-
-    fun getAllPhotosFromDatabase() {
-        uiScope.launch {
-            withContext(Dispatchers.IO) {
-                val result = repository.getAllPhotosFromDatabase()
-                _listOfPhotos.postValue(result.toMutableList())
-            }
-        }
     }
 
     fun errorMessageHasShown() {
