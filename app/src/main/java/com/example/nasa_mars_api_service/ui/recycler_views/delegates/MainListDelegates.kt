@@ -1,8 +1,13 @@
 package com.example.nasa_mars_api_service.ui.recycler_views.delegates
 
+import android.app.Activity
 import android.graphics.Color
+import android.net.Uri
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade
 import com.example.nasa_mars_api_service.R
+import com.example.nasa_mars_api_service.core.buildUTIFromURL
+import com.example.nasa_mars_api_service.core.getBaseRequestOptions
 import com.example.nasa_mars_api_service.core.models.FavouritePhoto
 import com.example.nasa_mars_api_service.core.models.MarsPhoto
 import com.example.nasa_mars_api_service.core.models.PictureOfDayPhoto
@@ -13,7 +18,6 @@ import com.example.nasa_mars_api_service.ui.recycler_views.models.GridListMarsPh
 import com.example.nasa_mars_api_service.ui.recycler_views.models.HorizontalFavouritePhotosListRecycler
 import com.example.nasa_mars_api_service.ui.recycler_views.models.ListItem
 import com.example.nasa_mars_api_service.ui.recycler_views.models.PictureOfDayItem
-import com.hannesdorfmann.adapterdelegates4.AsyncListDifferDelegationAdapter
 import com.hannesdorfmann.adapterdelegates4.dsl.adapterDelegateViewBinding
 
 /**
@@ -65,9 +69,20 @@ object MainListDelegates {
                     binding.addToFavoriteImage.setImageResource(R.drawable.ic_star)
                 }
 
-                //Add Glide
-                binding.pictureOfTheDayImageView.setBackgroundColor(Color.RED)
+                val uri = buildUTIFromURL(item.picture.imageSrc)
+                val options = getBaseRequestOptions()
+                Glide.with(binding.pictureOfTheDayImageView)
+                    .applyDefaultRequestOptions(options)
+                    .load(uri)
+                    .transition(withCrossFade())
+                    .into(binding.pictureOfTheDayImageView)
 
+            }
+
+            onViewRecycled {
+                if ((binding.root.context as? Activity)?.isDestroyed?.not() == true) {
+                    Glide.with(binding.root).clear(binding.pictureOfTheDayImageView)
+                }
             }
         }
 
@@ -94,10 +109,20 @@ object MainListDelegates {
         ) {
 
             bind {
-                // Add Glide
-                binding.marsPhotoImageView.setBackgroundColor(Color.BLUE)
+                val uri = buildUTIFromURL(item.imageSrc)
+                val options = getBaseRequestOptions()
+                Glide.with(binding.marsPhotoImageView)
+                    .applyDefaultRequestOptions(options)
+                    .load(uri)
+                    .transition(withCrossFade())
+                    .into(binding.marsPhotoImageView)
             }
 
+            onViewRecycled {
+                if ((binding.root.context as? Activity)?.isDestroyed?.not() == true) {
+                    Glide.with(binding.root).clear(binding.marsPhotoImageView)
+                }
+            }
         }
 
 
@@ -109,16 +134,30 @@ object MainListDelegates {
             bind {
                 binding.addToFavoriteImage.setImageResource(R.drawable.ic_star__filled)
                 val photo = item.photo
+                var uri: Uri? = null
                 when(photo) {
                     is MarsPhoto -> {
                         binding.solTextView.text = getString(R.string.sol) + " " + photo.solDate
+                        uri = buildUTIFromURL(photo.imageSrc)
                     }
                     is PictureOfDayPhoto -> {
                         binding.solTextView.text = getString(R.string.nasa)
+                        uri = buildUTIFromURL(photo.imageSrc)
                     }
                 }
-                // Add Glide
-                binding.imageView.setBackgroundColor(Color.GREEN)
+
+                val options = getBaseRequestOptions()
+                Glide.with(binding.imageView)
+                    .applyDefaultRequestOptions(options)
+                    .load(uri)
+                    .transition(withCrossFade())
+                    .into(binding.imageView)
+            }
+
+            onViewRecycled {
+                if ((binding.root.context as? Activity)?.isDestroyed?.not() == true) {
+                    Glide.with(binding.root).clear(binding.imageView)
+                }
             }
         }
 

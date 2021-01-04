@@ -1,7 +1,12 @@
 package com.example.nasa_mars_api_service.ui.recycler_views.delegates
 
+import android.app.Activity
 import android.graphics.Color
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade
 import com.example.nasa_mars_api_service.R
+import com.example.nasa_mars_api_service.core.buildUTIFromURL
+import com.example.nasa_mars_api_service.core.getBaseRequestOptions
 import com.example.nasa_mars_api_service.core.models.MarsPhoto
 import com.example.nasa_mars_api_service.databinding.FragmentSearchListItemBinding
 import com.example.nasa_mars_api_service.ui.recycler_views.models.ListItem
@@ -36,9 +41,19 @@ object SearchListDelegates {
                     }
                 }
 
-                // Add Glide
-                binding.imageView.setBackgroundColor(Color.LTGRAY)
+                val uri = buildUTIFromURL(item.imageSrc)
+                val options = getBaseRequestOptions()
+                Glide.with(binding.imageView)
+                    .applyDefaultRequestOptions(options)
+                    .load(uri)
+                    .transition(withCrossFade())
+                    .into(binding.imageView)
+            }
+
+            onViewRecycled {
+                if ((binding.root.context as? Activity)?.isDestroyed?.not() == true) {
+                    Glide.with(binding.root).clear(binding.imageView)
+                }
             }
         }
-
 }
