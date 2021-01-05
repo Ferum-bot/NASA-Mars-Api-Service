@@ -44,6 +44,6 @@ data class FavoritePhotoDB(
     val title: String = "Title",
 
     @ColumnInfo(name = "description")
-    val description: String = "Description"
+    val description: String = "Description",
 
 )

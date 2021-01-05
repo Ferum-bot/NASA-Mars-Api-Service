@@ -13,6 +13,10 @@ class AppPreferences private constructor(context: Context): BaseApplicationPrefe
         return storage.getInt(NUMBER_OF_AVAILABLE_PAGES_NAME, 0)
     }
 
+    override fun getNumberOfAvailablePictureOfDayPhotos(): Int {
+        TODO("Not yet implemented")
+    }
+
     override fun updateNumberOfFavouritePhotos(number: Int) {
         val editor = storage.edit()
         editor.putInt(NUMBER_OF_FAVORITE_PHOTOS_NAME, number)
@@ -23,6 +27,10 @@ class AppPreferences private constructor(context: Context): BaseApplicationPrefe
         val editor = storage.edit()
         editor.putInt(NUMBER_OF_AVAILABLE_PAGES_NAME, number)
         editor.apply()
+    }
+
+    override fun updateNumberOfAvailablePictureOfDayPhotos(number: Int) {
+        TODO("Not yet implemented")
     }
 
     override fun getNumberOfFavouritePhotos(): Int {

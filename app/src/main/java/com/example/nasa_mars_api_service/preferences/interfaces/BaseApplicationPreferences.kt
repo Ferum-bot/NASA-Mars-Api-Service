@@ -13,9 +13,11 @@ interface BaseApplicationPreferences {
     fun getNumberOfFavouritePhotos(): Int
     fun getNumberOfAvailableMarsPhotos(): Int
     fun getNumberOfAvailablePages(): Int
+    fun getNumberOfAvailablePictureOfDayPhotos(): Int
 
     fun updateNumberOfFavouritePhotos(number: Int)
     fun updateNumberOfAvailableMarsPhotos(number: Int)
     fun updateNumberOfAvailablePages(number: Int)
+    fun updateNumberOfAvailablePictureOfDayPhotos(number: Int)
 
 }

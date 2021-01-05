@@ -17,51 +17,120 @@ class MainListViewModel(
     private val repository: BaseRepository
 ): ViewModel() {
 
+    // Result list for main screen
     private val _resultListForMainListAdapter: MutableLiveData<List<ListItem>> = MutableLiveData(listOf())
     val resultListForMainListAdapter: LiveData<List<ListItem>>
     get() = _resultListForMainListAdapter
 
-    private val _pictureOfDay: MutableLiveData<PictureOfDayPhoto?> = MutableLiveData(null)
-    val pictureOfDayPhoto: LiveData<PictureOfDayPhoto?>
-    get() = _pictureOfDay
+    // Statuses for different types
+    private val _statusFavouritesPhotos: MutableLiveData<MarsApiStatus> = MutableLiveData(MarsApiStatus.NOT_ACTIVE)
+    val statusFavouritesPhotos: LiveData<MarsApiStatus>
+    get() = _statusFavouritesPhotos
 
-    private val _favoritePhotos: MutableLiveData<List<FavouritePhoto>> = MutableLiveData(listOf())
-    val favoritePhotos: LiveData<List<FavouritePhoto>>
-    get() = _favoritePhotos
+    private val _statusPictureOfDay: MutableLiveData<MarsApiStatus> = MutableLiveData(MarsApiStatus.NOT_ACTIVE)
+    val statusPictureOfDay: LiveData<MarsApiStatus>
+    get() = _statusPictureOfDay
 
-    private val _newMarsPhotos: MutableLiveData<List<MarsPhoto>> = MutableLiveData(listOf())
-    val newMarsPhotos: LiveData<List<MarsPhoto>>
-    get() = _newMarsPhotos
+    private val _statusNewMarsPhotos: MutableLiveData<MarsApiStatus> = MutableLiveData(MarsApiStatus.NOT_ACTIVE)
+    val statusNewMarsPhotos: LiveData<MarsApiStatus>
+    get() = _statusNewMarsPhotos
 
-    private val _status: MutableLiveData<MarsApiStatus> = MutableLiveData(MarsApiStatus.NOT_ACTIVE)
-    val status: LiveData<MarsApiStatus>
-    get() = _status
+    // Error messages for different types
+    private val _messageFavouritesPhotos: MutableLiveData<String?> = MutableLiveData(null)
+    val messageFavouritesPhotos: LiveData<String?>
+    get() = _messageFavouritesPhotos
 
-    private val _message: MutableLiveData<String?> = MutableLiveData(null)
-    val message: LiveData<String?>
-    get() = _message
+    private val _messagePictureOfDay: MutableLiveData<String?> = MutableLiveData(null)
+    val messagePictureOfDay: LiveData<String?>
+    get() = _messagePictureOfDay
 
-    private suspend fun getPictureOfDay() {
-        val result = repository.getPictureOfDay()
-        _pictureOfDay.postValue(result)
+    private val _messageNewMarsPhotos: MutableLiveData<String?> = MutableLiveData(null)
+    val messageNewMarsPhotos: LiveData<String?>
+    get() = _messageNewMarsPhotos
+
+    private fun postPictureOfDay(photo: PictureOfDayPhoto) {
+        val currentItem: PictureOfDayItem = PictureOfDayItem(
+                picture = photo
+        )
+        val currentResult = _resultListForMainListAdapter.value!!.toMutableList()
+        currentResult[0] = currentItem
+        _resultListForMainListAdapter.postValue(currentResult)
     }
 
-    private suspend fun getFavoritesPhoto() {
-        val result = repository.getAllFavoritesPhotos()
+    private fun postFavouritesPhotos(photos: List<FavouritePhoto>) {
+        val currentItem: HorizontalFavouritePhotosListRecycler = HorizontalFavouritePhotosListRecycler(
+                listOfItems = photos
+        )
+        val currentResult = _resultListForMainListAdapter.value!!.toMutableList()
+        currentResult[1] = currentItem
+        _resultListForMainListAdapter.postValue(currentResult)
     }
 
-    private suspend fun getNewMarsPhotosFromNetwork() {
-        val result = repository.getLastMarsPhotos()
+    private fun postNewMarsPhotos(photos: List<MarsPhoto>) {
+        val currentItem: GridListMarsPhotos = GridListMarsPhotos(
+                listOfPhotos = photos
+        )
+        val currentResult = _resultListForMainListAdapter.value!!.toMutableList()
+        currentResult[2] = currentItem
+        _resultListForMainListAdapter.postValue(currentResult)
+    }
+
+    private fun getPictureOfDay() {
+        viewModelScope.launch(Dispatchers.IO) {
+            try {
+                _statusPictureOfDay.postValue(MarsApiStatus.LOADING)
+                val result = repository.getPictureOfDay()
+                _statusPictureOfDay.postValue(MarsApiStatus.DONE)
+                postPictureOfDay(result)
+            }
+            catch (ex: Exception) {
+                _statusPictureOfDay.postValue(MarsApiStatus.ERROR)
+                _messagePictureOfDay.postValue(ex.message)
+
+                val result = repository.getLastPictureOfDayFromCash()
+                postPictureOfDay(result)
+            }
+        }
+    }
+
+    private fun getFavoritesPhoto() {
+        viewModelScope.launch(Dispatchers.IO) {
+            try {
+                _statusFavouritesPhotos.postValue(MarsApiStatus.LOADING)
+                val result = repository.getAllFavoritesPhotos()
+                postFavouritesPhotos(result)
+                _statusFavouritesPhotos.postValue(MarsApiStatus.DONE)
+            }
+            catch (ex: Exception) {
+                _statusFavouritesPhotos.postValue(MarsApiStatus.ERROR)
+                _messageFavouritesPhotos.postValue(ex.message)
+            }
+        }
+    }
+
+    private fun getNewMarsPhotosFromNetwork() {
+        viewModelScope.launch(Dispatchers.IO) {
+            try {
+                _statusNewMarsPhotos.postValue(MarsApiStatus.LOADING)
+                val result = repository.getLastMarsPhotos()
+                postNewMarsPhotos(result)
+                _statusNewMarsPhotos.postValue(MarsApiStatus.DONE)
+            } catch (ex: Exception) {
+                _statusNewMarsPhotos.postValue(MarsApiStatus.ERROR)
+                _messageNewMarsPhotos.postValue(ex.message)
+
+                val result = repository.getAllMarsPhotosFromCache()
+                postNewMarsPhotos(result)
+            }
+        }
     }
 
     private fun buildLoadingFavoritesPhotos(): HorizontalFavouritePhotoListLoadingRecycler {
         return HorizontalFavouritePhotoListLoadingRecycler(
                 listOfItems = listOf(
-                        FavouritePhotoLoadingListItem(),
-                        FavouritePhotoLoadingListItem(),
-                        FavouritePhotoLoadingListItem(),
-                        FavouritePhotoLoadingListItem(),
-                        FavouritePhotoLoadingListItem()
+                        FavouritePhotoLoadingListItem(), FavouritePhotoLoadingListItem(),
+                        FavouritePhotoLoadingListItem(), FavouritePhotoLoadingListItem(),
+                        FavouritePhotoLoadingListItem(), FavouritePhotoLoadingListItem()
                 )
         )
     }
@@ -69,26 +138,10 @@ class MainListViewModel(
     private fun buildLoadingGridMarsPhotos(): GridListLoadingMarsPhotos {
         return GridListLoadingMarsPhotos(
                 listOfPhotos = listOf(
-                        MarsPhotoLoading(),
-                        MarsPhotoLoading(),
-                        MarsPhotoLoading(),
-                        MarsPhotoLoading(),
-                        MarsPhotoLoading(),
-                        MarsPhotoLoading(),
-                        MarsPhotoLoading(),
-                        MarsPhotoLoading(),
-                        MarsPhotoLoading(),
-                        MarsPhotoLoading(),
-                        MarsPhotoLoading(),
-                        MarsPhotoLoading(),
-                        MarsPhotoLoading(),
-                        MarsPhotoLoading(),
-                        MarsPhotoLoading(),
-                        MarsPhotoLoading(),
-                        MarsPhotoLoading(),
-                        MarsPhotoLoading(),
-                        MarsPhotoLoading(),
-                        MarsPhotoLoading(),
+                        MarsPhotoLoading(), MarsPhotoLoading(), MarsPhotoLoading(), MarsPhotoLoading(), MarsPhotoLoading(),
+                        MarsPhotoLoading(), MarsPhotoLoading(), MarsPhotoLoading(), MarsPhotoLoading(), MarsPhotoLoading(),
+                        MarsPhotoLoading(), MarsPhotoLoading(), MarsPhotoLoading(), MarsPhotoLoading(), MarsPhotoLoading(),
+                        MarsPhotoLoading(), MarsPhotoLoading(), MarsPhotoLoading(), MarsPhotoLoading(), MarsPhotoLoading(),
                 )
         )
     }
@@ -104,37 +157,24 @@ class MainListViewModel(
 
     fun getResultList() {
         buildLoadingList()
-
-//        viewModelScope.launch(Dispatchers.IO) {
-//            try {
-//                getPictureOfDay()
-//            }
-//            catch (ex: Exception) {
-//
-//            }
-//        }
-//
-//        viewModelScope.launch(Dispatchers.IO) {
-//            try {
-//                getFavoritesPhoto()
-//            }
-//            catch (ex: Exception) {
-//
-//            }
-//        }
-//
-//        viewModelScope.launch(Dispatchers.IO) {
-//            try {
-//                getNewMarsPhotosFromNetwork()
-//            }
-//            catch (ex: Exception) {
-//
-//            }
-//        }
+        getFavoritesPhoto()
+        getPictureOfDay()
+        getNewMarsPhotosFromNetwork()
     }
 
     fun refreshAllPhotos() {
-
+        if (nothingIsAvailable()) {
+            buildLoadingList()
+        }
+        getFavoritesPhoto()
+        getPictureOfDay()
+        getNewMarsPhotosFromNetwork()
     }
 
+    fun nothingIsAvailable(): Boolean {
+        val numberOfFavourites = repository.getNumberOfCashedFavouritesPhotos()
+        val numberOfMarsPhotos = repository.getNumberOfCashedMarsPhotos()
+        val numberOfDayPhoto = repository.getNumberOfCashedPictureOfDayPhotos()
+        return numberOfFavourites == 0 && numberOfMarsPhotos == 0 && numberOfDayPhoto == 0
+    }
 }

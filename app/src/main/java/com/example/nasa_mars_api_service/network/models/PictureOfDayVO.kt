@@ -25,6 +25,9 @@ data class PictureOfDayVO(
         val mediaType: String = "image",
 
         @Json(name = "title")
-        val title: String = " Title"
+        val title: String = " Title",
+
+        @Json(name = "image_src")
+        val imageSrc: String = ""
 
 ): Parcelable

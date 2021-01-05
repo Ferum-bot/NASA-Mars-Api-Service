@@ -58,7 +58,7 @@ class MainListFragment: Fragment() {
         val preferences: BaseApplicationPreferences = AppPreferences.getInstance(context)
         val remoteSource = MarsPhotosApi.marsPhotosService
 
-        val repository: BaseRepository = MainRepository.getInstance(database.marsPhotoDao, database.favoritePhotoDao, remoteSource, preferences)
+        val repository: BaseRepository = MainRepository.getInstance(database.marsPhotoDao, database.favoritePhotoDao, database.pictureOfDayDao, remoteSource, preferences)
         val factory = MainListViewModelFactory(repository)
 
         viewModel = ViewModelProvider(this, factory).get(MainListViewModel::class.java)
@@ -69,6 +69,11 @@ class MainListFragment: Fragment() {
         binding.appBar.setOnMenuItemClickListener { menuItem ->
             when(menuItem.title) {
                 getString(R.string.refresh) -> {
+                    if (!Variables.isNetworkConnectionAvailable) {
+                        showErrorImage()
+                        showErrorMessage(getString(R.string.no_internet_connection))
+                        return@setOnMenuItemClickListener true
+                    }
                     viewModel.refreshAllPhotos()
                     true
                 }
@@ -92,16 +97,43 @@ class MainListFragment: Fragment() {
             mainListAdapter.items = newList
         })
 
+        viewModel.messageFavouritesPhotos.observe(viewLifecycleOwner, Observer { message ->
+            if (message != null) {
+                showErrorMessage("Can't get Favourites photos: $message")
+            }
+        })
+
+        viewModel.messageNewMarsPhotos.observe(viewLifecycleOwner, Observer { message ->
+            if (message != null) {
+                showErrorMessage("Can't get New Mars photos: $message")
+            }
+        })
+
+        viewModel.messagePictureOfDay.observe(viewLifecycleOwner, Observer { message ->
+            if (message != null) {
+                showErrorMessage("Can't get Picture of day: $message")
+            }
+        })
+
     }
 
     private fun requirePhotosOrIssue() {
-
+        if (!Variables.isNetworkConnectionAvailable && viewModel.nothingIsAvailable()) {
+            showErrorImage()
+            showErrorMessage(getString(R.string.no_internet_connection))
+            return
+        }
         viewModel.getResultList()
-
     }
 
     private fun showErrorMessage(message: String) {
         Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
+    }
+
+    private fun showErrorImage() {
+        binding.mainRecyclerView.visibility = View.GONE
+        binding.statusImage.visibility = View.VISIBLE
+        binding.statusImage.setImageResource(R.drawable.connection_error_image)
     }
 
 }
