@@ -18,11 +18,12 @@ interface BaseRepository {
 
     suspend fun getPictureOfDay(): PictureOfDayPhoto
 
-    suspend fun getAllFavoritesPhotos(): LiveData<List<FavouritePhoto>>
+    suspend fun getAllFavoritesPhotos(): List<FavouritePhoto>
 
     suspend fun getAllMarsPhotosFromCache(): List<MarsPhoto>
 
     suspend fun searchMarsPhotos(date: MarsDateTypes, rover: MarsRovers, camera: MarsRoversCamera): List<MarsPhoto>
+    suspend fun getLastMarsPhotos(): List<MarsPhoto>
 
     suspend fun addPhotoToFavourite(marsPhoto: MarsPhoto)
     suspend fun addPhotoToFavourite(pictureOfDayPhoto: PictureOfDayPhoto)

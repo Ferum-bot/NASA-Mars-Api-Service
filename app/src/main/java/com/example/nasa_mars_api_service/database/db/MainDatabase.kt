@@ -9,6 +9,7 @@ import com.example.nasa_mars_api_service.database.dao.MarsPhotoDao
 import com.example.nasa_mars_api_service.database.db.MainDatabase.Companion.DATABASE_VERSION
 import com.example.nasa_mars_api_service.database.entities.FavoritePhotoDB
 import com.example.nasa_mars_api_service.database.entities.MarsPhotoDB
+import javax.inject.Inject
 
 @Database(
     entities = [MarsPhotoDB::class, FavoritePhotoDB::class],

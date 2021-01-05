@@ -41,6 +41,7 @@ class AppPreferences private constructor(context: Context): BaseApplicationPrefe
 
     companion object {
 
+        @Volatile
         private var INSTANCE: AppPreferences? = null
 
         private const val PREFERENCES_NAME = "APPLICATION_SHARED_PREFERENCES"

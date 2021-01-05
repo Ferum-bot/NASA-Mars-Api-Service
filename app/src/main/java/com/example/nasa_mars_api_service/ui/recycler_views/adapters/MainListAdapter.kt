@@ -2,6 +2,7 @@ package com.example.nasa_mars_api_service.ui.recycler_views.adapters
 
 import com.example.nasa_mars_api_service.ui.recycler_views.call_backs.BaseDiffCallBack
 import com.example.nasa_mars_api_service.ui.recycler_views.delegates.MainListDelegates
+import com.example.nasa_mars_api_service.ui.recycler_views.delegates.MainListLoadingDelegates
 import com.example.nasa_mars_api_service.ui.recycler_views.models.ListItem
 import com.hannesdorfmann.adapterdelegates4.AsyncListDifferDelegationAdapter
 
@@ -18,6 +19,9 @@ class MainListAdapter: AsyncListDifferDelegationAdapter<ListItem>(BaseDiffCallBa
             .addDelegate(MainListDelegates.pictureOfDayDelegate())
             .addDelegate(MainListDelegates.favouritePhotosHorizontalListDelegate())
             .addDelegate(MainListDelegates.gridMarsPhotosListDelegate())
+            .addDelegate(MainListLoadingDelegates.pictureOfDayLoadingDelegate())
+            .addDelegate(MainListLoadingDelegates.favouritePhotosHorizontalListLoadingDelegate())
+            .addDelegate(MainListLoadingDelegates.gridMarsPhotosListLoadingDelegate())
     }
 
 }

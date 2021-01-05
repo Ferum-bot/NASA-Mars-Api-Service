@@ -1,7 +1,6 @@
 package com.example.nasa_mars_api_service.ui.recycler_views.delegates
 
 import android.app.Activity
-import android.graphics.Color
 import android.net.Uri
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade
