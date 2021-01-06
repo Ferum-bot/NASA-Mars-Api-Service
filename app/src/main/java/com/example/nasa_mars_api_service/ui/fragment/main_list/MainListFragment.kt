@@ -12,6 +12,10 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.example.nasa_mars_api_service.R
 import com.example.nasa_mars_api_service.core.Variables
+import com.example.nasa_mars_api_service.core.enums.PhotoTypes
+import com.example.nasa_mars_api_service.core.models.FavouritePhoto
+import com.example.nasa_mars_api_service.core.models.MarsPhoto
+import com.example.nasa_mars_api_service.core.models.PictureOfDayPhoto
 import com.example.nasa_mars_api_service.database.db.MainDatabase
 import com.example.nasa_mars_api_service.databinding.FragmentMainListBinding
 import com.example.nasa_mars_api_service.network.api.MarsPhotosApi
@@ -88,7 +92,42 @@ class MainListFragment: Fragment() {
     }
 
     private fun setAdapters() {
-        mainListAdapter = MainListAdapter()
+        mainListAdapter = MainListAdapter(
+
+                // Click Listeners for each type
+                fun (favouritePhotoItem: FavouritePhoto) {
+                    when(favouritePhotoItem.typeOfPhoto) {
+                        PhotoTypes.PICTURE_OF_DAY -> {
+                            findNavController().navigate(MainListFragmentDirections.actionMainListFragmentToImageOfDayFragment())
+                        }
+                        PhotoTypes.MARS_PHOTO -> {
+                            findNavController().navigate(MainListFragmentDirections.actionMainListFragmentToMarsPhotoDescriptionFragment())
+                        }
+                    }
+                },
+
+                fun (pictureOfDayPhotoItem: PictureOfDayPhoto) {
+                    findNavController().navigate(MainListFragmentDirections.actionMainListFragmentToImageOfDayFragment())
+                },
+
+                fun (marsPhotoItem: MarsPhoto) {
+                    findNavController().navigate(MainListFragmentDirections.actionMainListFragmentToMarsPhotoDescriptionFragment())
+                },
+
+                // Long Click Listeners for each type
+                fun (favouritePhotoItem: FavouritePhoto) {
+                    findNavController().navigate(MainListFragmentDirections.actionMainListFragmentToPhotoViewFragment())
+                },
+
+                fun (pictureOfDayPhotoItem: PictureOfDayPhoto) {
+                    findNavController().navigate(MainListFragmentDirections.actionMainListFragmentToPhotoViewFragment())
+                },
+
+                fun (marsPhotoItem: MarsPhoto) {
+                    findNavController().navigate(MainListFragmentDirections.actionMainListFragmentToPhotoViewFragment())
+                }
+
+        )
         binding.mainRecyclerView.adapter = mainListAdapter
     }
 

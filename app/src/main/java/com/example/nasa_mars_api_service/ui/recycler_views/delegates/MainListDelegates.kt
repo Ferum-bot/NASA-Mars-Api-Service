@@ -27,13 +27,16 @@ import com.hannesdorfmann.adapterdelegates4.dsl.adapterDelegateViewBinding
  */
 object MainListDelegates {
 
-    fun favouritePhotosHorizontalListDelegate() =
+    fun favouritePhotosHorizontalListDelegate(
+            favouritePhotosListItemClickListener: (FavouritePhoto) -> Unit,
+            favouritePhotosListItemLongClickListener: (FavouritePhoto) -> Unit
+    ) =
         adapterDelegateViewBinding<HorizontalFavouritePhotosListRecycler, ListItem, FragmentHorizontalListBinding>(
             { inflater, container -> FragmentHorizontalListBinding.inflate(inflater, container, false) }
         ) {
 
             // OnCreateViewHolder
-            val adapter = FavouritePhotosHorizontalListAdapter()
+            val adapter = FavouritePhotosHorizontalListAdapter(favouritePhotosListItemClickListener, favouritePhotosListItemLongClickListener)
             binding.horizontalRecyclerView.adapter = adapter
 
             // OnBindViewHolder
@@ -50,7 +53,10 @@ object MainListDelegates {
             }
         }
 
-    fun pictureOfDayDelegate() =
+    fun pictureOfDayDelegate(
+            pictureOfDayPhotoItemClickListener: (PictureOfDayPhoto) -> Unit,
+            pictureOfDayPhotoItemLongClickListener: (PictureOfDayPhoto) -> Unit
+    ) =
         adapterDelegateViewBinding<PictureOfDayItem, ListItem, FragmentImageOfDayBinding>(
             { inflater, container -> FragmentImageOfDayBinding.inflate(inflater, container, false) }
         ) {
@@ -76,6 +82,14 @@ object MainListDelegates {
                     .transition(withCrossFade())
                     .into(binding.pictureOfTheDayImageView)
 
+                binding.materialCardViewLayout.setOnClickListener {
+                    pictureOfDayPhotoItemClickListener(item.picture)
+                }
+
+                binding.pictureOfTheDayImageView.setOnLongClickListener {
+                    pictureOfDayPhotoItemLongClickListener(item.picture)
+                    true
+                }
             }
 
             onViewRecycled {
@@ -85,12 +99,15 @@ object MainListDelegates {
             }
         }
 
-    fun gridMarsPhotosListDelegate() =
+    fun gridMarsPhotosListDelegate(
+            marsPhotoItemClickListener: (MarsPhoto) -> Unit,
+            marsPhotoItemLongClickListener: (MarsPhoto) -> Unit
+    ) =
         adapterDelegateViewBinding<GridListMarsPhotos, ListItem, FragmentGridMarsPhotoListBinding>(
             { inflater, container -> FragmentGridMarsPhotoListBinding.inflate(inflater, container, false) }
         ) {
 
-            val adapter = GridMarsPhotoListAdapter()
+            val adapter = GridMarsPhotoListAdapter(marsPhotoItemClickListener, marsPhotoItemLongClickListener)
             binding.titleLabel.text = getString(R.string.new_mars_photos)
             binding.gridMarsPhotoRecyclerView.adapter = adapter
 
@@ -102,7 +119,10 @@ object MainListDelegates {
         }
 
 
-    fun gridMarsPhotosListItemDelegate() =
+    fun gridMarsPhotosListItemDelegate(
+            marsPhotoItemClickListener: (MarsPhoto) -> Unit,
+            marsPhotoItemLongClickListener: (MarsPhoto) -> Unit
+    ) =
         adapterDelegateViewBinding<MarsPhoto, ListItem, FragmentGridMarsPhotoItemBinding>(
             { inflater, container -> FragmentGridMarsPhotoItemBinding.inflate(inflater, container, false) }
         ) {
@@ -115,6 +135,15 @@ object MainListDelegates {
                     .load(uri)
                     .transition(withCrossFade())
                     .into(binding.marsPhotoImageView)
+
+                binding.marsPhotoImageView.setOnClickListener {
+                    marsPhotoItemClickListener(item)
+                }
+
+                binding.marsPhotoImageView.setOnLongClickListener {
+                    marsPhotoItemLongClickListener(item)
+                    true
+                }
             }
 
             onViewRecycled {
@@ -125,7 +154,10 @@ object MainListDelegates {
         }
 
 
-    fun favouritePhotosHorizontalListItemDelegate() =
+    fun favouritePhotosHorizontalListItemDelegate(
+            favouritePhotosListItemClickListener: (FavouritePhoto) -> Unit,
+            favouritePhotosListItemLongClickListener: (FavouritePhoto) -> Unit
+    ) =
         adapterDelegateViewBinding<FavouritePhoto, ListItem, FragmentHorizontalListItemBinding>(
             { inflater, container -> FragmentHorizontalListItemBinding.inflate(inflater, container, false) }
         ) {
@@ -151,6 +183,15 @@ object MainListDelegates {
                     .load(uri)
                     .transition(withCrossFade())
                     .into(binding.imageView)
+
+                binding.materialCardViewLayout.setOnClickListener {
+                    favouritePhotosListItemClickListener(item)
+                }
+
+                binding.imageView.setOnLongClickListener {
+                    favouritePhotosListItemLongClickListener(item)
+                    true
+                }
             }
 
             onViewRecycled {
