@@ -21,6 +21,7 @@ interface BaseRepository {
     suspend fun getAllFavoritesPhotos(): List<FavouritePhoto>
 
     suspend fun getAllMarsPhotosFromCache(): List<MarsPhoto>
+    suspend fun getMarsPhotoFromCache(id: Int): MarsPhoto
 
     suspend fun searchMarsPhotos(page: Int, date: MarsDateTypes, rover: MarsRovers, camera: MarsRoversCamera): List<MarsPhoto>
     suspend fun getLastMarsPhotos(page: Int = 1): List<MarsPhoto>
@@ -34,6 +35,7 @@ interface BaseRepository {
     suspend fun deleteFavouritePhoto(favouritePhoto: FavouritePhoto)
 
     suspend fun getLastPictureOfDayFromCash(): PictureOfDayPhoto
+    suspend fun getPictureOfDayFromCash(id: Int): PictureOfDayPhoto
 
     fun getNumberOfCashedMarsPhotos(): Int
     fun getNumberOfCashedFavouritesPhotos(): Int

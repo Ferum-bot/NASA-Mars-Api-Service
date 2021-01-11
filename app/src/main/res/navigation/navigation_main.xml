@@ -80,6 +80,10 @@
         <argument
             android:name="id"
             app:argType="integer" />
+        <argument
+            android:name="PhotoType"
+            app:argType="com.example.nasa_mars_api_service.core.enums.PhotoTypes"
+            android:defaultValue="MARS_PHOTO" />
     </fragment>
     <fragment
         android:id="@+id/searchMarsPhotoFragment"

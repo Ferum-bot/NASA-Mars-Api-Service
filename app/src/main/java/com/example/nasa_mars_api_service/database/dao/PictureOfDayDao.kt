@@ -34,6 +34,9 @@ interface PictureOfDayDao {
     @Query("SELECT EXISTS (SELECT description FROM $TABLE_NAME WHERE description = :description)")
     suspend fun isPictureExists(description: String): Boolean
 
+    @Query("SELECT * FROM $TABLE_NAME WHERE id = :id")
+    suspend fun getPictureOfDay(id: Int): PictureOfDayPhotoDB
+
     companion object {
         private const val TABLE_NAME = "picture_of_day_photo_table"
     }

@@ -23,11 +23,20 @@ class MainRepository private constructor(
         private val preferences: BaseApplicationPreferences
 ): BaseRepository {
 
-
     override val numberOfAvailableMarsPhotosPages: Int
         get() = preferences.getNumberOfAvailableMarsPhotoPages()
     override val numberOfAvailableSearchMarsPhotosPages: Int
         get() = preferences.getNumberOfAvailableSearchMarsPhotoPages()
+
+    override suspend fun getMarsPhotoFromCache(id: Int): MarsPhoto {
+        val result = localSourceMarsPhotos.getPhoto(id)
+        return result.toMarsPhoto()
+    }
+
+    override suspend fun getPictureOfDayFromCash(id: Int): PictureOfDayPhoto {
+        val result = localSourcePictureOfDayDao.getPictureOfDay(id)
+        return result.toPictureOfDayPhoto()
+    }
 
     override fun getNumberOfCashedMarsPhotos(): Int {
         return preferences.getNumberOfAvailableMarsPhotos()

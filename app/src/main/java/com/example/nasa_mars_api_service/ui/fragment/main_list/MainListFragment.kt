@@ -124,15 +124,15 @@ class MainListFragment: Fragment() {
 
                 // Long Click Listeners for each type
                 fun (favouritePhotoItem: FavouritePhoto) {
-                    findNavController().navigate(MainListFragmentDirections.actionMainListFragmentToPhotoViewFragment(favouritePhotoItem.id))
+                    findNavController().navigate(MainListFragmentDirections.actionMainListFragmentToPhotoViewFragment(favouritePhotoItem.id, favouritePhotoItem.typeOfPhoto))
                 },
 
                 fun (pictureOfDayPhotoItem: PictureOfDayPhoto) {
-                    findNavController().navigate(MainListFragmentDirections.actionMainListFragmentToPhotoViewFragment(pictureOfDayPhotoItem.id))
+                    findNavController().navigate(MainListFragmentDirections.actionMainListFragmentToPhotoViewFragment(pictureOfDayPhotoItem.id, PhotoTypes.PICTURE_OF_DAY))
                 },
 
                 fun (marsPhotoItem: MarsPhoto) {
-                    findNavController().navigate(MainListFragmentDirections.actionMainListFragmentToPhotoViewFragment(marsPhotoItem.id))
+                    findNavController().navigate(MainListFragmentDirections.actionMainListFragmentToPhotoViewFragment(marsPhotoItem.id, PhotoTypes.MARS_PHOTO))
                 },
 
                 // Add to favourites click listeners

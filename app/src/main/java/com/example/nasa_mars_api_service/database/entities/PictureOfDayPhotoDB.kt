@@ -12,7 +12,7 @@ import androidx.room.PrimaryKey
  */
 @Entity(tableName = "picture_of_day_photo_table")
 data class PictureOfDayPhotoDB(
-        @PrimaryKey(autoGenerate = true)
+        @PrimaryKey()
         val id: Int = 0,
 
         @ColumnInfo(name = "author")
