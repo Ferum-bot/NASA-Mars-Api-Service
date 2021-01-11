@@ -17,32 +17,33 @@ enum class MarsRoversCamera(val fullName: String) {
     PANCAM("Panoramic Camera"),
     MINITES("Miniature Thermal Emission Spectrometer (Mini-TES)");
 
-
-    fun getAvailableCamerasFromRover(rover: MarsRovers): List<MarsRoversCamera> {
-        return when(rover) {
-            MarsRovers.CURIOSITY -> listOf(
-                    FHAZ,
-                    RHAZ,
-                    MAST,
-                    CHEMCAM,
-                    MAHLI,
-                    MARDI,
-                    NAVCAM
-            )
-            MarsRovers.SPIRIT -> listOf(
-                    FHAZ,
-                    RHAZ,
-                    NAVCAM,
-                    PANCAM,
-                    MINITES
-            )
-            MarsRovers.OPPORTUNITY -> listOf(
-                    FHAZ,
-                    RHAZ,
-                    NAVCAM,
-                    PANCAM,
-                    MINITES
-            )
+    companion object {
+        fun getAvailableCamerasFromRover(rover: MarsRovers): List<MarsRoversCamera> {
+            return when (rover) {
+                MarsRovers.CURIOSITY -> listOf(
+                        FHAZ,
+                        RHAZ,
+                        MAST,
+                        CHEMCAM,
+                        MAHLI,
+                        MARDI,
+                        NAVCAM
+                )
+                MarsRovers.SPIRIT -> listOf(
+                        FHAZ,
+                        RHAZ,
+                        NAVCAM,
+                        PANCAM,
+                        MINITES
+                )
+                MarsRovers.OPPORTUNITY -> listOf(
+                        FHAZ,
+                        RHAZ,
+                        NAVCAM,
+                        PANCAM,
+                        MINITES
+                )
+            }
         }
     }
 }

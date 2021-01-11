@@ -2,16 +2,21 @@ package com.example.nasa_mars_api_service.ui.fragment.search
 
 import android.animation.LayoutTransition
 import android.os.Bundle
+import android.text.Editable
+import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.EditText
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.example.nasa_mars_api_service.R
+import com.example.nasa_mars_api_service.core.enums.MarsDateTypes
+import com.example.nasa_mars_api_service.core.enums.MarsRovers
 import com.example.nasa_mars_api_service.core.enums.MarsRoversCamera
 import com.example.nasa_mars_api_service.databinding.FragmentSearchBinding
 import com.google.android.material.switchmaterial.SwitchMaterial
@@ -48,7 +53,6 @@ class SearchMarsPhotoFragment: Fragment() {
 
         setUpBaseVisibilityForViews()
         setAllClickListeners()
-        setEditTextListener()
     }
 
     private fun setUpBaseVisibilityForViews() {
@@ -67,11 +71,12 @@ class SearchMarsPhotoFragment: Fragment() {
                 }
                 ButtonStates.INFORMATION_CHOSEN -> {
                     hideDateChooseViews()
-                    (it as Button).text = viewModel.getChosenDate()
+                    (it as Button).text = viewModel.date
                     chooseDateButtonState = ButtonStates.HIDDEN
                 }
                 ButtonStates.HIDDEN -> {
                     showDateChooseViews()
+                    (it as Button).text = getString(R.string.choose_date)
                     binding.dateEditText.visibility = View.VISIBLE
                     chooseDateButtonState = ButtonStates.INFORMATION_CHOSEN
                 }
@@ -96,21 +101,22 @@ class SearchMarsPhotoFragment: Fragment() {
                 }
                 ButtonStates.INFORMATION_CHOSEN -> {
                     hideRoverChooseViews()
-                    (it as Button).text = viewModel.getChosenRoverName()
+                    (it as Button).text = viewModel.rover!!.name
                     chooseRoverButtonState = ButtonStates.HIDDEN
                 }
                 ButtonStates.HIDDEN -> {
                     showRoverChooseViews()
+                    (it as Button).text = getString(R.string.choose_rover)
                     chooseRoverButtonState = ButtonStates.INFORMATION_CHOSEN
                 }
             }
         }
 
         binding.chooseCameraButton.setOnClickListener {
-//            if (roverIsNotChosen()) {
-//                showErrorMessage()
-//                return@setOnClickListener
-//            }
+            if (roverIsNotChosen()) {
+                showErrorMessage(R.string.choose_rover_firstly)
+                return@setOnClickListener
+            }
             val cameras = viewModel.getAvailableRoverCameras()
             when(chooseCameraButtonState) {
                 ButtonStates.INFORMATION_NOT_CHOSEN -> {
@@ -129,18 +135,85 @@ class SearchMarsPhotoFragment: Fragment() {
                 }
                 ButtonStates.HIDDEN -> {
                     showRoverCamerasChooseViews(cameras)
+                    (it as Button).text = getString(R.string.choose_camera)
                     chooseCameraButtonState = ButtonStates.INFORMATION_CHOSEN
                 }
             }
         }
 
         binding.searchButton.setOnClickListener {
+            if (viewModel.searchParametersAreValid()) {
+                val params = viewModel.getSearchParameters()
+                findNavController().navigate(SearchMarsPhotoFragmentDirections.actionSearchMarsPhotoFragmentToSearchListFragment(params))
+            }
+            else {
+                getInvalidParamsAndShowErrorMessage()
+            }
+        }
 
+        binding.chooseRoverRadioGroup.setOnCheckedChangeListener { _, checkedId ->
+            chooseRoverButtonState = ButtonStates.INFORMATION_CHOSEN
+            chooseCameraButtonState = ButtonStates.INFORMATION_NOT_CHOSEN
+            hideRoverCameraChooseViews()
+            binding.chooseCameraRadioGroup.clearCheck()
+            when(checkedId) {
+                binding.curiosityRadioButton.id -> {
+                    viewModel.rover = MarsRovers.CURIOSITY
+                }
+                binding.opportunityRadioButton.id -> {
+                    viewModel.rover = MarsRovers.OPPORTUNITY
+                }
+                binding.spiritRadioButton.id -> {
+                    viewModel.rover = MarsRovers.SPIRIT
+                }
+            }
+        }
+
+        binding.chooseCameraRadioGroup.setOnCheckedChangeListener { _, checkedId ->
+            when(checkedId) {
+                binding.CHEMCAMRadioButton.id -> {
+                    viewModel.camera = MarsRoversCamera.CHEMCAM
+                    chooseCameraButtonState = ButtonStates.INFORMATION_CHOSEN
+                }
+                binding.FHAZRadioButton.id -> {
+                    viewModel.camera = MarsRoversCamera.FHAZ
+                    chooseCameraButtonState = ButtonStates.INFORMATION_CHOSEN
+                }
+                binding.MAHLIRadioButton.id -> {
+                    viewModel.camera = MarsRoversCamera.MAHLI
+                    chooseCameraButtonState = ButtonStates.INFORMATION_CHOSEN
+                }
+                binding.MARDIRadioButton.id -> {
+                    viewModel.camera = MarsRoversCamera.MARDI
+                    chooseCameraButtonState = ButtonStates.INFORMATION_CHOSEN
+                }
+                binding.MASTRadioButton.id -> {
+                    viewModel.camera = MarsRoversCamera.MAST
+                    chooseCameraButtonState = ButtonStates.INFORMATION_CHOSEN
+                }
+                binding.MINITESRadioButton.id -> {
+                    viewModel.camera = MarsRoversCamera.MINITES
+                    chooseCameraButtonState = ButtonStates.INFORMATION_CHOSEN
+                }
+                binding.NAVCAMRadioButton.id -> {
+                    viewModel.camera = MarsRoversCamera.NAVCAM
+                    chooseCameraButtonState = ButtonStates.INFORMATION_CHOSEN
+                }
+                binding.PANCAMRadioButton.id -> {
+                    viewModel.camera = MarsRoversCamera.PANCAM
+                    chooseCameraButtonState = ButtonStates.INFORMATION_CHOSEN
+                }
+                binding.RHAZRadioButton.id -> {
+                    viewModel.camera = MarsRoversCamera.RHAZ
+                    chooseCameraButtonState = ButtonStates.INFORMATION_CHOSEN
+                }
+            }
         }
 
         binding.switchEathDate.setOnCheckedChangeListener { buttonView, isChecked ->
             when(isChecked) {
                 true -> {
+                    viewModel.dateType = MarsDateTypes.EARTH_DATE
                     binding.dateEditText.visibility = View.VISIBLE
                     if (binding.switchSol.isChecked) {
                         binding.switchSol.isChecked = false
@@ -157,6 +230,7 @@ class SearchMarsPhotoFragment: Fragment() {
         binding.switchSol.setOnCheckedChangeListener { buttonView, isChecked ->
             when(isChecked) {
                 true -> {
+                    viewModel.dateType = MarsDateTypes.MARS_SOL
                     binding.dateEditText.visibility = View.VISIBLE
                     if (binding.switchEathDate.isChecked) {
                         binding.switchEathDate.isChecked = false
@@ -173,15 +247,60 @@ class SearchMarsPhotoFragment: Fragment() {
         binding.appBar.setNavigationOnClickListener {
             findNavController().popBackStack()
         }
+
+        binding.dateEditText.setOnKeyListener { view, keyCode, event ->
+            if (event.action == KeyEvent.ACTION_DOWN && keyCode == KeyEvent.KEYCODE_ENTER) {
+                val editText = view as EditText
+                val date = editText.text.toString()
+                if (viewModel.isDateCorrect(date)) {
+                    viewModel.date = date
+                    chooseDateButtonState = ButtonStates.INFORMATION_CHOSEN
+                }
+                else {
+                    if (binding.switchEathDate.isChecked) {
+                        showErrorMessage(R.string.incorrect_date_earth_date)
+                    }
+                    else {
+                        showErrorMessage(R.string.incorrect_date_mars_sol)
+                    }
+                }
+                return@setOnKeyListener true
+            }
+            return@setOnKeyListener false
+        }
     }
 
     private fun roverIsNotChosen(): Boolean {
         return !(chooseRoverButtonState == ButtonStates.HIDDEN || chooseRoverButtonState == ButtonStates.INFORMATION_CHOSEN)
     }
 
-    private fun showErrorMessage() {
+    private fun showErrorMessage(message: String) {
         val context = requireContext()
         Toast.makeText(context, R.string.choose_rover_firstly, Toast.LENGTH_SHORT).show()
+    }
+
+    private fun showErrorMessage(messageId: Int) {
+        val context = requireContext()
+        Toast.makeText(context, getString(messageId), Toast.LENGTH_SHORT).show()
+    }
+
+    private fun getInvalidParamsAndShowErrorMessage() {
+        if (viewModel.dateType == null) {
+            showErrorMessage(R.string.choose_date_firstly)
+            return
+        }
+        if (viewModel.date == null) {
+            showErrorMessage(R.string.choose_date_firstly)
+            return
+        }
+        if (viewModel.rover == null) {
+            showErrorMessage(R.string.choose_rover_firstly)
+            return
+        }
+        if (viewModel.camera == null) {
+            showErrorMessage(R.string.choose_camera_firstly)
+            return
+        }
     }
 
     private fun showDateChooseViews() {
@@ -261,10 +380,6 @@ class SearchMarsPhotoFragment: Fragment() {
         binding.curiosityRadioButton.visibility = View.GONE
         binding.opportunityRadioButton.visibility = View.GONE
         binding.spiritRadioButton.visibility = View.GONE
-    }
-
-    private fun setEditTextListener() {
-
     }
 
     private fun setUpAnimations() {
