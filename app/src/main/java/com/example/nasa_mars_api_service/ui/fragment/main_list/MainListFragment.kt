@@ -1,15 +1,19 @@
 package com.example.nasa_mars_api_service.ui.fragment.main_list
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.nasa_mars_api_service.R
 import com.example.nasa_mars_api_service.core.Variables
 import com.example.nasa_mars_api_service.core.enums.PhotoTypes
@@ -91,7 +95,6 @@ class MainListFragment: Fragment() {
                 else -> false
             }
         }
-
     }
 
     private fun setAdapters() {
@@ -101,33 +104,35 @@ class MainListFragment: Fragment() {
                 fun (favouritePhotoItem: FavouritePhoto) {
                     when(favouritePhotoItem.typeOfPhoto) {
                         PhotoTypes.PICTURE_OF_DAY -> {
-                            findNavController().navigate(MainListFragmentDirections.actionMainListFragmentToImageOfDayFragment())
+                            val photo = favouritePhotoItem.photo as PictureOfDayPhoto
+                            findNavController().navigate(MainListFragmentDirections.actionMainListFragmentToImageOfDayFragment(photo.id))
                         }
                         PhotoTypes.MARS_PHOTO -> {
-                            findNavController().navigate(MainListFragmentDirections.actionMainListFragmentToMarsPhotoDescriptionFragment())
+                            val photo = favouritePhotoItem.photo as MarsPhoto
+                            findNavController().navigate(MainListFragmentDirections.actionMainListFragmentToMarsPhotoDescriptionFragment(photo.id))
                         }
                     }
                 },
 
                 fun (pictureOfDayPhotoItem: PictureOfDayPhoto) {
-                    findNavController().navigate(MainListFragmentDirections.actionMainListFragmentToImageOfDayFragment())
+                    findNavController().navigate(MainListFragmentDirections.actionMainListFragmentToImageOfDayFragment(pictureOfDayPhotoItem.id))
                 },
 
                 fun (marsPhotoItem: MarsPhoto) {
-                    findNavController().navigate(MainListFragmentDirections.actionMainListFragmentToMarsPhotoDescriptionFragment())
+                    findNavController().navigate(MainListFragmentDirections.actionMainListFragmentToMarsPhotoDescriptionFragment(marsPhotoItem.id))
                 },
 
                 // Long Click Listeners for each type
                 fun (favouritePhotoItem: FavouritePhoto) {
-                    findNavController().navigate(MainListFragmentDirections.actionMainListFragmentToPhotoViewFragment())
+                    findNavController().navigate(MainListFragmentDirections.actionMainListFragmentToPhotoViewFragment(favouritePhotoItem.id))
                 },
 
                 fun (pictureOfDayPhotoItem: PictureOfDayPhoto) {
-                    findNavController().navigate(MainListFragmentDirections.actionMainListFragmentToPhotoViewFragment())
+                    findNavController().navigate(MainListFragmentDirections.actionMainListFragmentToPhotoViewFragment(pictureOfDayPhotoItem.id))
                 },
 
                 fun (marsPhotoItem: MarsPhoto) {
-                    findNavController().navigate(MainListFragmentDirections.actionMainListFragmentToPhotoViewFragment())
+                    findNavController().navigate(MainListFragmentDirections.actionMainListFragmentToPhotoViewFragment(marsPhotoItem.id))
                 },
 
                 // Add to favourites click listeners
@@ -151,11 +156,24 @@ class MainListFragment: Fragment() {
                     return true
                 },
 
+                // Delete photo from favourites
                 fun (favouritePhotoItem: FavouritePhoto): Boolean {
                     viewModel.deletePhotoFromFavourites(favouritePhotoItem)
                     return true
-                }
+                },
+
+                // On click listener for load more button
+                fun() {
+                    viewModel.downloadNewMarsPhotos()
+                },
+
+                // Live data to observe status in load more button
+                viewModel.statusNewMarsPhotos,
+
+                // Lifecycle owner for live data
+                this.viewLifecycleOwner
         )
+
         binding.mainRecyclerView.adapter = mainListAdapter
     }
 

@@ -2,8 +2,10 @@ package com.example.nasa_mars_api_service.ui.recycler_views.delegates
 
 import android.app.Activity
 import android.net.Uri
-import android.util.Log
-import android.widget.Toast
+import android.view.View
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.Observer
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade
 import com.example.nasa_mars_api_service.R
@@ -13,12 +15,10 @@ import com.example.nasa_mars_api_service.core.models.FavouritePhoto
 import com.example.nasa_mars_api_service.core.models.MarsPhoto
 import com.example.nasa_mars_api_service.core.models.PictureOfDayPhoto
 import com.example.nasa_mars_api_service.databinding.*
+import com.example.nasa_mars_api_service.network.MarsApiStatus
 import com.example.nasa_mars_api_service.ui.recycler_views.adapters.FavouritePhotosHorizontalListAdapter
 import com.example.nasa_mars_api_service.ui.recycler_views.adapters.GridMarsPhotoListAdapter
-import com.example.nasa_mars_api_service.ui.recycler_views.models.GridListMarsPhotos
-import com.example.nasa_mars_api_service.ui.recycler_views.models.HorizontalFavouritePhotosListRecycler
-import com.example.nasa_mars_api_service.ui.recycler_views.models.ListItem
-import com.example.nasa_mars_api_service.ui.recycler_views.models.PictureOfDayItem
+import com.example.nasa_mars_api_service.ui.recycler_views.models.*
 import com.hannesdorfmann.adapterdelegates4.dsl.adapterDelegateViewBinding
 
 /**
@@ -90,6 +90,10 @@ object MainListDelegates {
                     pictureOfDayPhotoItemClickListener(item.picture)
                 }
 
+                binding.pictureOfTheDayImageView.setOnClickListener {
+                    pictureOfDayPhotoItemClickListener(item.picture)
+                }
+
                 binding.pictureOfTheDayImageView.setOnLongClickListener {
                     pictureOfDayPhotoItemLongClickListener(item.picture)
                     true
@@ -116,7 +120,7 @@ object MainListDelegates {
     fun gridMarsPhotosListDelegate(
             marsPhotoItemClickListener: (MarsPhoto) -> Unit,
             marsPhotoItemLongClickListener: (MarsPhoto) -> Unit,
-            marsPhotoItemAddToFavouritesClickListener: (MarsPhoto) -> Boolean
+            marsPhotoItemAddToFavouritesClickListener: (MarsPhoto) -> Boolean,
     ) =
         adapterDelegateViewBinding<GridListMarsPhotos, ListItem, FragmentGridMarsPhotoListBinding>(
             { inflater, container -> FragmentGridMarsPhotoListBinding.inflate(inflater, container, false) }
@@ -236,4 +240,51 @@ object MainListDelegates {
             }
         }
 
+
+    fun loadMoreMarsPhotosDelegate(
+            loadMorePhotosButtonClickListener: () -> Unit,
+            resultStatus: LiveData<MarsApiStatus>,
+            lifecycleOwner: LifecycleOwner
+    ) =
+        adapterDelegateViewBinding<LoadMoreMarsPhotos, ListItem, FragmentLoadMoreItemsBinding>(
+            { inflater, container -> FragmentLoadMoreItemsBinding.inflate(inflater, container, false) }
+        ) {
+            binding.progressBar.visibility = View.GONE
+            binding.loadMoreButton.visibility = View.VISIBLE
+            binding.lifecycleOwner = lifecycleOwner
+
+            bind {
+                binding.progressBar.visibility = View.GONE
+                binding.loadMoreButton.visibility = View.VISIBLE
+
+                binding.loadMoreButton.setOnClickListener {
+                    binding.progressBar.visibility = View.VISIBLE
+                    binding.loadMoreButton.visibility = View.GONE
+                    loadMorePhotosButtonClickListener()
+                }
+                binding.lifecycleOwner?.let { it1 ->
+                    resultStatus.observe(it1, Observer { newStatus->
+                        when (newStatus) {
+                            MarsApiStatus.ERROR -> {
+                                binding.progressBar.visibility = View.GONE
+                                binding.loadMoreButton.visibility = View.VISIBLE
+                            }
+                            MarsApiStatus.DONE -> {
+                                binding.progressBar.visibility = View.GONE
+                                binding.loadMoreButton.visibility = View.VISIBLE
+                            }
+                            MarsApiStatus.LOADING -> {
+                                binding.loadMoreButton.visibility = View.GONE
+                                binding.progressBar.visibility = View.VISIBLE
+                            }
+                            else -> {
+                                binding.progressBar.visibility = View.GONE
+                                binding.loadMoreButton.visibility = View.VISIBLE
+                            }
+                        }
+                    } )
+                }
+            }
+
+        }
 }

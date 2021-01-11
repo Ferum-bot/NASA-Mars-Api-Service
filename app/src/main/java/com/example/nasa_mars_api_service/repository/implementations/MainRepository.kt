@@ -1,7 +1,5 @@
 package com.example.nasa_mars_api_service.repository.implementations
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import com.example.nasa_mars_api_service.core.*
 import com.example.nasa_mars_api_service.core.enums.MarsDateTypes
 import com.example.nasa_mars_api_service.core.enums.MarsRovers
@@ -14,10 +12,8 @@ import com.example.nasa_mars_api_service.database.dao.MarsPhotoDao
 import com.example.nasa_mars_api_service.database.dao.PictureOfDayDao
 import com.example.nasa_mars_api_service.network.api.MarsPhotosService
 import com.example.nasa_mars_api_service.network.models.MarsPhotoVO
-import com.example.nasa_mars_api_service.preferences.implementations.AppPreferences
 import com.example.nasa_mars_api_service.preferences.interfaces.BaseApplicationPreferences
 import com.example.nasa_mars_api_service.repository.interfaces.BaseRepository
-import javax.inject.Inject
 
 class MainRepository private constructor(
         private val localSourceMarsPhotos: MarsPhotoDao,
@@ -27,6 +23,11 @@ class MainRepository private constructor(
         private val preferences: BaseApplicationPreferences
 ): BaseRepository {
 
+
+    override val numberOfAvailableMarsPhotosPages: Int
+        get() = preferences.getNumberOfAvailableMarsPhotoPages()
+    override val numberOfAvailableSearchMarsPhotosPages: Int
+        get() = preferences.getNumberOfAvailableSearchMarsPhotoPages()
 
     override fun getNumberOfCashedMarsPhotos(): Int {
         return preferences.getNumberOfAvailableMarsPhotos()
@@ -45,9 +46,10 @@ class MainRepository private constructor(
         return result.toPictureOfDayPhoto()
     }
 
-    override suspend fun getLastMarsPhotos(): List<MarsPhoto> {
-        val result = remoteSource.getLastMarsPhotos().listPhotos
+    override suspend fun getLastMarsPhotos(page: Int): List<MarsPhoto> {
+        val result = remoteSource.getLastMarsPhotos(page).listPhotos
         updateNumberOfPhotosInPreferences(result)
+        updateNumberOfMarsPhotoPagesInPreferences(page)
         localSourceMarsPhotos.insertPhotos(result.map { it.toMarsPhotoDB() })
         return result.map { it.toMarsPhoto() }
     }
@@ -149,6 +151,13 @@ class MainRepository private constructor(
                 val number = preferences.getNumberOfAvailableMarsPhotos()
                 preferences.updateNumberOfAvailableMarsPhotos(number + 1)
             }
+        }
+    }
+
+    private fun updateNumberOfMarsPhotoPagesInPreferences(page: Int){
+        val currentNumberOfPages = preferences.getNumberOfAvailableMarsPhotoPages()
+        if (currentNumberOfPages < page) {
+            preferences.updateNumberOfAvailableMarsPhotoPages(page)
         }
     }
 

@@ -1,10 +1,10 @@
 package com.example.nasa_mars_api_service.ui.fragment.main_list
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.nasa_mars_api_service.core.add
 import com.example.nasa_mars_api_service.core.models.FavouritePhoto
 import com.example.nasa_mars_api_service.core.models.MarsPhoto
 import com.example.nasa_mars_api_service.core.models.PictureOfDayPhoto
@@ -50,8 +50,16 @@ class MainListViewModel(
     val messageNewMarsPhotos: LiveData<String?>
     get() = _messageNewMarsPhotos
 
+    private val _messageDelete: MutableLiveData<String?> = MutableLiveData(null)
+    val messageDelete: LiveData<String?>
+    get() = _messageDelete
+
     private val numberOfCashedPictureOfDayPhotos: Int
     get() = repository.getNumberOfCashedPictureOfDayPhotos()
+
+    private val _isNewPhotoLoading: MutableLiveData<Boolean> = MutableLiveData(false)
+    val isNewPhotoLoading: LiveData<Boolean>
+    get() = _isNewPhotoLoading
 
     private fun postPictureOfDay(photo: PictureOfDayPhoto?) {
         if (photo == null) {
@@ -86,7 +94,7 @@ class MainListViewModel(
     }
 
     private fun postNewMarsPhotos(photos: List<MarsPhoto>) {
-        val currentItem = if (photos.isEmpty()) {
+        var currentItem = if (photos.isEmpty()) {
             GridListMarsPhotos(
                     title = "Can't find new Mars photos!",
                     listOf()
@@ -99,7 +107,24 @@ class MainListViewModel(
         }
         val currentResult = _resultListForMainListAdapter.value!!.toMutableList()
         currentResult[currentResult.size - 1] = currentItem
+        val loadMoreButton = LoadMoreMarsPhotos()
+        currentResult.add(loadMoreButton)
         _resultListForMainListAdapter.postValue(currentResult)
+    }
+
+    private fun addNewMarsPhotosToList(photos: List<MarsPhoto>) {
+        if (photos.isEmpty()) {
+            return
+        }
+        val currentResult = _resultListForMainListAdapter.value!!.toMutableList()
+        val currentItem = currentResult[currentResult.size - 2] as GridListMarsPhotos
+        val currentList = currentItem.listOfPhotos.toMutableList()
+        currentList.add(photos)
+        currentResult[currentResult.size - 2] = GridListMarsPhotos(
+                listOfPhotos = currentList.toList()
+        )
+        _resultListForMainListAdapter.postValue(currentResult)
+        _isNewPhotoLoading.postValue(false)
     }
 
     private fun getPictureOfDay() {
@@ -248,6 +273,7 @@ class MainListViewModel(
             }
             catch (ex: Exception) {
                 Timber.e(ex)
+                _messageDelete.postValue(ex.message)
             }
         }
     }
@@ -262,6 +288,7 @@ class MainListViewModel(
             }
             catch (ex: Exception) {
                 Timber.e(ex)
+                _messageDelete.postValue(ex.message)
             }
         }
     }
@@ -276,10 +303,29 @@ class MainListViewModel(
             }
             catch (ex: Exception) {
                 Timber.e(ex)
+                _messageDelete.postValue(ex.message)
             }
         }
     }
 
+    fun downloadNewMarsPhotos() {
+        _isNewPhotoLoading.postValue(true)
+        val downloadedPages = repository.numberOfAvailableMarsPhotosPages
+        viewModelScope.launch(Dispatchers.IO) {
+            try {
+                _statusNewMarsPhotos.postValue(MarsApiStatus.LOADING)
+                val result = repository.getLastMarsPhotos(downloadedPages + 1)
+                _statusNewMarsPhotos.postValue(MarsApiStatus.DONE)
+                addNewMarsPhotosToList(result)
+            }
+            catch (ex: Exception) {
+                Timber.e(ex)
+                _statusNewMarsPhotos.postValue(MarsApiStatus.ERROR)
+                _messageDelete.postValue(ex.message)
+                _isNewPhotoLoading.postValue(false)
+            }
+        }
+    }
 
     companion object {
         private const val TAG = "MainListViewModel"

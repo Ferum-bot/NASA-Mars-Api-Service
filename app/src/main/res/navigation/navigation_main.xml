@@ -53,6 +53,9 @@
             app:popEnterAnim="@anim/nav_default_pop_enter_anim"
             app:popExitAnim="@anim/nav_default_pop_exit_anim"
             app:popUpTo="@id/imageOfDayFragment"/>
+        <argument
+            android:name="id"
+            app:argType="integer" />
     </fragment>
     <fragment
         android:id="@+id/marsPhotoDescriptionFragment"
@@ -66,11 +69,18 @@
             app:popEnterAnim="@anim/nav_default_pop_enter_anim"
             app:popExitAnim="@anim/nav_default_pop_exit_anim"
             app:popUpTo="@id/marsPhotoDescriptionFragment"/>
+        <argument
+            android:name="id"
+            app:argType="integer" />
     </fragment>
     <fragment
         android:id="@+id/photoViewFragment"
         android:name="com.example.nasa_mars_api_service.ui.fragment.photo_view.PhotoViewFragment"
-        android:label="PhotoViewFragment" />
+        android:label="PhotoViewFragment" >
+        <argument
+            android:name="id"
+            app:argType="integer" />
+    </fragment>
     <fragment
         android:id="@+id/searchMarsPhotoFragment"
         android:name="com.example.nasa_mars_api_service.ui.fragment.search.SearchMarsPhotoFragment"
@@ -104,5 +114,8 @@
             app:popEnterAnim="@anim/nav_default_pop_enter_anim"
             app:popExitAnim="@anim/nav_default_pop_exit_anim"
             app:popUpTo="@id/searchListFragment"/>
+        <argument
+            android:name="MarsPhotoToSearch"
+            app:argType="com.example.nasa_mars_api_service.core.models.MarsPhotoToSearch" />
     </fragment>
 </navigation>

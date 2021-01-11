@@ -23,7 +23,7 @@ interface BaseRepository {
     suspend fun getAllMarsPhotosFromCache(): List<MarsPhoto>
 
     suspend fun searchMarsPhotos(page: Int, date: MarsDateTypes, rover: MarsRovers, camera: MarsRoversCamera): List<MarsPhoto>
-    suspend fun getLastMarsPhotos(): List<MarsPhoto>
+    suspend fun getLastMarsPhotos(page: Int = 1): List<MarsPhoto>
 
     suspend fun addPhotoToFavourite(marsPhoto: MarsPhoto)
     suspend fun addPhotoToFavourite(pictureOfDayPhoto: PictureOfDayPhoto)
@@ -38,4 +38,7 @@ interface BaseRepository {
     fun getNumberOfCashedMarsPhotos(): Int
     fun getNumberOfCashedFavouritesPhotos(): Int
     fun getNumberOfCashedPictureOfDayPhotos(): Int
+
+    val numberOfAvailableMarsPhotosPages: Int
+    val numberOfAvailableSearchMarsPhotosPages: Int
 }

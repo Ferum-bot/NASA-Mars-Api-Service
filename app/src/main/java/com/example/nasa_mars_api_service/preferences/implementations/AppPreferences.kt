@@ -8,9 +8,18 @@ class AppPreferences private constructor(context: Context): BaseApplicationPrefe
 
     private val storage: SharedPreferences = context.getSharedPreferences(PREFERENCES_NAME, Context.MODE_PRIVATE)
 
+    override fun getNumberOfAvailableSearchMarsPhotoPages(): Int {
+        return storage.getInt(NUMBER_OF_AVAILABLE_SEARCH_MARS_PHOTOS_PAGES_NAME, 0)
+    }
 
-    override fun getNumberOfAvailablePages(): Int {
-        return storage.getInt(NUMBER_OF_AVAILABLE_PAGES_NAME, 0)
+    override fun updateNumberOfAvailableSearchMarsPhotoPages(number: Int) {
+        val editor = storage.edit()
+        editor.putInt(NUMBER_OF_AVAILABLE_SEARCH_MARS_PHOTOS_PAGES_NAME, number)
+        editor.apply()
+    }
+
+    override fun getNumberOfAvailableMarsPhotoPages(): Int {
+        return storage.getInt(NUMBER_OF_AVAILABLE_MARS_PHOTOS_PAGES_NAME, 0)
     }
 
     override fun getNumberOfAvailablePictureOfDayPhotos(): Int {
@@ -23,9 +32,9 @@ class AppPreferences private constructor(context: Context): BaseApplicationPrefe
         editor.apply()
     }
 
-    override fun updateNumberOfAvailablePages(number: Int) {
+    override fun updateNumberOfAvailableMarsPhotoPages(number: Int) {
         val editor = storage.edit()
-        editor.putInt(NUMBER_OF_AVAILABLE_PAGES_NAME, number)
+        editor.putInt(NUMBER_OF_AVAILABLE_MARS_PHOTOS_PAGES_NAME, number)
         editor.apply()
     }
 
@@ -55,10 +64,11 @@ class AppPreferences private constructor(context: Context): BaseApplicationPrefe
         private var INSTANCE: AppPreferences? = null
 
         private const val PREFERENCES_NAME = "APPLICATION_SHARED_PREFERENCES"
-        private const val NUMBER_OF_AVAILABLE_PAGES_NAME = "number_of_available_pages"
+        private const val NUMBER_OF_AVAILABLE_MARS_PHOTOS_PAGES_NAME = "number_of_available_mars_photos_pages"
         private const val NUMBER_OF_AVAILABLE_PHOTOS_NAME = "number_of_available_photos"
         private const val NUMBER_OF_FAVORITE_PHOTOS_NAME = "number_of_favourite_photos"
         private const val NUMBER_OF_PICTURE_OF_DAY_PHOTOS_NAME = "number_of_picture_of_day_photos"
+        private const val NUMBER_OF_AVAILABLE_SEARCH_MARS_PHOTOS_PAGES_NAME = "number_of_available_search_mars_photos_pages"
 
         fun getInstance(context: Context): AppPreferences {
             synchronized(this) {
