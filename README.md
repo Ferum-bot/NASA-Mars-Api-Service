@@ -20,7 +20,7 @@ This app can show you some Mars photos.
 * Google Navigation compoment
 * Databinding
 * LiveData
-* Dependency injection(IOF)
+* Dependency injection(IoF)
 
 ## Some screenshots:
 
