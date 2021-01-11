@@ -18,6 +18,7 @@ import com.example.nasa_mars_api_service.core.models.MarsPhoto
 import com.example.nasa_mars_api_service.core.models.PictureOfDayPhoto
 import com.example.nasa_mars_api_service.database.db.MainDatabase
 import com.example.nasa_mars_api_service.databinding.FragmentMainListBinding
+import com.example.nasa_mars_api_service.network.MarsApiStatus
 import com.example.nasa_mars_api_service.network.api.MarsPhotosApi
 import com.example.nasa_mars_api_service.preferences.implementations.AppPreferences
 import com.example.nasa_mars_api_service.preferences.interfaces.BaseApplicationPreferences
@@ -73,9 +74,11 @@ class MainListFragment: Fragment() {
         binding.appBar.setOnMenuItemClickListener { menuItem ->
             when(menuItem.title) {
                 getString(R.string.refresh) -> {
+                    menuItem.setIcon(R.drawable.refreshing_animation)
                     if (!Variables.isNetworkConnectionAvailable) {
                         showErrorImage()
                         showErrorMessage(getString(R.string.no_internet_connection))
+                        menuItem.setIcon(R.drawable.ic_refresh)
                         return@setOnMenuItemClickListener true
                     }
                     viewModel.refreshAllPhotos()
@@ -125,8 +128,33 @@ class MainListFragment: Fragment() {
 
                 fun (marsPhotoItem: MarsPhoto) {
                     findNavController().navigate(MainListFragmentDirections.actionMainListFragmentToPhotoViewFragment())
-                }
+                },
 
+                // Add to favourites click listeners
+                fun (pictureOfDayItemAddToFavourites: PictureOfDayPhoto): Boolean {
+                    if (pictureOfDayItemAddToFavourites.isFavourite) {
+                        viewModel.deletePhotoFromFavourites(pictureOfDayItemAddToFavourites)
+                    }
+                    else {
+                        viewModel.addPhotoToFavourites(pictureOfDayItemAddToFavourites)
+                    }
+                   return true
+                },
+
+                fun (marsPhotoItemAddToFavourites: MarsPhoto): Boolean {
+                    if (marsPhotoItemAddToFavourites.isFavourite) {
+                        viewModel.deletePhotoFromFavourites(marsPhotoItemAddToFavourites)
+                    }
+                    else {
+                        viewModel.addPhotoToFavourites(marsPhotoItemAddToFavourites)
+                    }
+                    return true
+                },
+
+                fun (favouritePhotoItem: FavouritePhoto): Boolean {
+                    viewModel.deletePhotoFromFavourites(favouritePhotoItem)
+                    return true
+                }
         )
         binding.mainRecyclerView.adapter = mainListAdapter
     }
@@ -138,22 +166,48 @@ class MainListFragment: Fragment() {
 
         viewModel.messageFavouritesPhotos.observe(viewLifecycleOwner, Observer { message ->
             if (message != null) {
+                if (!Variables.isNetworkConnectionAvailable) {
+                    showErrorMessage("Can't get Favourites photos: " + getString(R.string.no_internet_connection))
+                }
                 showErrorMessage("Can't get Favourites photos: $message")
             }
         })
 
         viewModel.messageNewMarsPhotos.observe(viewLifecycleOwner, Observer { message ->
             if (message != null) {
+                if (!Variables.isNetworkConnectionAvailable) {
+                    showErrorMessage("Can't get New Mars photos: " + getString(R.string.no_internet_connection))
+                }
                 showErrorMessage("Can't get New Mars photos: $message")
             }
         })
 
         viewModel.messagePictureOfDay.observe(viewLifecycleOwner, Observer { message ->
             if (message != null) {
+                if (!Variables.isNetworkConnectionAvailable) {
+                    showErrorMessage("Can't get Picture of day: " + getString(R.string.no_internet_connection))
+                    return@Observer
+                }
                 showErrorMessage("Can't get Picture of day: $message")
             }
         })
 
+        viewModel.statusPictureOfDay.observe(viewLifecycleOwner, Observer { newStatus->
+            when(newStatus) {
+                MarsApiStatus.NOT_ACTIVE -> {
+                    binding.appBar.menu.getItem(1).setIcon(R.drawable.ic_refresh)
+                }
+                MarsApiStatus.ERROR -> {
+                    binding.appBar.menu.getItem(1).setIcon(R.drawable.ic_refresh)
+                }
+                MarsApiStatus.DONE -> {
+                    binding.appBar.menu.getItem(1).setIcon(R.drawable.ic_refresh)
+                }
+                MarsApiStatus.LOADING -> {
+                    binding.appBar.menu.getItem(1).setIcon(R.drawable.refreshing_animation)
+                }
+            }
+        })
     }
 
     private fun requirePhotosOrIssue() {

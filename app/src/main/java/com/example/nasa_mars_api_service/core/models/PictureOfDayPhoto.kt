@@ -17,6 +17,8 @@ data class PictureOfDayPhoto(
 
         val description: String = "Description",
 
+        val date: String = "11.02.2002",
+
         val isFavourite: Boolean = false,
 
         val imageSrc: String = "",

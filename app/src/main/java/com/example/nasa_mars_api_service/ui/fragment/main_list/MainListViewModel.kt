@@ -1,5 +1,6 @@
 package com.example.nasa_mars_api_service.ui.fragment.main_list
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -12,6 +13,7 @@ import com.example.nasa_mars_api_service.repository.interfaces.BaseRepository
 import com.example.nasa_mars_api_service.ui.recycler_views.models.*
 import com.example.nasa_mars_api_service.ui.recycler_views.models.loading.*
 import kotlinx.coroutines.*
+import timber.log.Timber
 
 class MainListViewModel(
     private val repository: BaseRepository
@@ -48,8 +50,17 @@ class MainListViewModel(
     val messageNewMarsPhotos: LiveData<String?>
     get() = _messageNewMarsPhotos
 
-    private fun postPictureOfDay(photo: PictureOfDayPhoto) {
-        val currentItem: PictureOfDayItem = PictureOfDayItem(
+    private val numberOfCashedPictureOfDayPhotos: Int
+    get() = repository.getNumberOfCashedPictureOfDayPhotos()
+
+    private fun postPictureOfDay(photo: PictureOfDayPhoto?) {
+        if (photo == null) {
+            val currentResult = _resultListForMainListAdapter.value!!.toMutableList()
+            currentResult.removeAt(0)
+            _resultListForMainListAdapter.postValue(currentResult)
+            return
+        }
+        val currentItem = PictureOfDayItem(
                 picture = photo
         )
         val currentResult = _resultListForMainListAdapter.value!!.toMutableList()
@@ -58,20 +69,36 @@ class MainListViewModel(
     }
 
     private fun postFavouritesPhotos(photos: List<FavouritePhoto>) {
-        val currentItem: HorizontalFavouritePhotosListRecycler = HorizontalFavouritePhotosListRecycler(
-                listOfItems = photos
-        )
+        val currentItem = if (photos.isEmpty()) {
+            HorizontalFavouritePhotosListRecycler(
+                    title = "No Favourites! Add One!",
+                    listOf()
+            )
+        }
+        else {
+            HorizontalFavouritePhotosListRecycler(
+                    listOfItems = photos
+            )
+        }
         val currentResult = _resultListForMainListAdapter.value!!.toMutableList()
         currentResult[1] = currentItem
         _resultListForMainListAdapter.postValue(currentResult)
     }
 
     private fun postNewMarsPhotos(photos: List<MarsPhoto>) {
-        val currentItem: GridListMarsPhotos = GridListMarsPhotos(
-                listOfPhotos = photos
-        )
+        val currentItem = if (photos.isEmpty()) {
+            GridListMarsPhotos(
+                    title = "Can't find new Mars photos!",
+                    listOf()
+            )
+        }
+        else {
+            GridListMarsPhotos(
+                    listOfPhotos = photos
+            )
+        }
         val currentResult = _resultListForMainListAdapter.value!!.toMutableList()
-        currentResult[2] = currentItem
+        currentResult[currentResult.size - 1] = currentItem
         _resultListForMainListAdapter.postValue(currentResult)
     }
 
@@ -87,7 +114,12 @@ class MainListViewModel(
                 _statusPictureOfDay.postValue(MarsApiStatus.ERROR)
                 _messagePictureOfDay.postValue(ex.message)
 
-                val result = repository.getLastPictureOfDayFromCash()
+                val result = if (numberOfCashedPictureOfDayPhotos != 0) {
+                    repository.getLastPictureOfDayFromCash()
+                }
+                else {
+                    null
+                }
                 postPictureOfDay(result)
             }
         }
@@ -176,5 +208,80 @@ class MainListViewModel(
         val numberOfMarsPhotos = repository.getNumberOfCashedMarsPhotos()
         val numberOfDayPhoto = repository.getNumberOfCashedPictureOfDayPhotos()
         return numberOfFavourites == 0 && numberOfMarsPhotos == 0 && numberOfDayPhoto == 0
+    }
+
+    fun addPhotoToFavourites(photo: MarsPhoto) {
+        viewModelScope.launch(Dispatchers.IO) {
+            try {
+                repository.addPhotoToFavourite(photo)
+                withContext(Dispatchers.Main) {
+                    getFavoritesPhoto()
+                }
+            }
+            catch (ex: Exception) {
+                Timber.e(ex)
+            }
+        }
+    }
+
+    fun addPhotoToFavourites(photo: PictureOfDayPhoto) {
+        viewModelScope.launch(Dispatchers.IO) {
+            try {
+                repository.addPhotoToFavourite(photo)
+                withContext(Dispatchers.Main) {
+                    getFavoritesPhoto()
+                }
+            }
+            catch (ex: Exception) {
+                Timber.e(ex)
+            }
+        }
+    }
+
+    fun deletePhotoFromFavourites(photo: MarsPhoto) {
+        viewModelScope.launch(Dispatchers.IO) {
+            try {
+                repository.deleteFavouritePhoto(photo)
+                withContext(Dispatchers.Main) {
+                    getFavoritesPhoto()
+                }
+            }
+            catch (ex: Exception) {
+                Timber.e(ex)
+            }
+        }
+    }
+
+    fun deletePhotoFromFavourites(photo: PictureOfDayPhoto) {
+        viewModelScope.launch(Dispatchers.IO) {
+            try {
+                repository.deleteFavouritePhoto(photo)
+                withContext(Dispatchers.Main) {
+                    getFavoritesPhoto()
+                }
+            }
+            catch (ex: Exception) {
+                Timber.e(ex)
+            }
+        }
+    }
+
+    fun deletePhotoFromFavourites(photo: FavouritePhoto) {
+        viewModelScope.launch(Dispatchers.IO) {
+            try {
+                repository.deleteFavouritePhoto(photo)
+                withContext(Dispatchers.Main) {
+                    getFavoritesPhoto()
+                }
+            }
+            catch (ex: Exception) {
+                Timber.e(ex)
+            }
+        }
+    }
+
+
+    companion object {
+        private const val TAG = "MainListViewModel"
     }
 }

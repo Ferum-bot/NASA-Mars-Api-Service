@@ -29,6 +29,8 @@ interface BaseRepository {
     suspend fun addPhotoToFavourite(pictureOfDayPhoto: PictureOfDayPhoto)
     suspend fun addPhotoToFavourite(favouritePhoto: FavouritePhoto)
 
+    suspend fun deleteFavouritePhoto(marsPhoto: MarsPhoto)
+    suspend fun deleteFavouritePhoto(pictureOfDayPhoto: PictureOfDayPhoto)
     suspend fun deleteFavouritePhoto(favouritePhoto: FavouritePhoto)
 
     suspend fun getLastPictureOfDayFromCash(): PictureOfDayPhoto

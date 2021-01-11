@@ -2,6 +2,8 @@ package com.example.nasa_mars_api_service.ui.recycler_views.delegates
 
 import android.app.Activity
 import android.net.Uri
+import android.util.Log
+import android.widget.Toast
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade
 import com.example.nasa_mars_api_service.R
@@ -29,14 +31,15 @@ object MainListDelegates {
 
     fun favouritePhotosHorizontalListDelegate(
             favouritePhotosListItemClickListener: (FavouritePhoto) -> Unit,
-            favouritePhotosListItemLongClickListener: (FavouritePhoto) -> Unit
+            favouritePhotosListItemLongClickListener: (FavouritePhoto) -> Unit,
+            favouritePhotosListItemDeleteFromFavouritesClickListener: (FavouritePhoto) -> Boolean
     ) =
         adapterDelegateViewBinding<HorizontalFavouritePhotosListRecycler, ListItem, FragmentHorizontalListBinding>(
             { inflater, container -> FragmentHorizontalListBinding.inflate(inflater, container, false) }
         ) {
 
             // OnCreateViewHolder
-            val adapter = FavouritePhotosHorizontalListAdapter(favouritePhotosListItemClickListener, favouritePhotosListItemLongClickListener)
+            val adapter = FavouritePhotosHorizontalListAdapter(favouritePhotosListItemClickListener, favouritePhotosListItemLongClickListener, favouritePhotosListItemDeleteFromFavouritesClickListener)
             binding.horizontalRecyclerView.adapter = adapter
 
             // OnBindViewHolder
@@ -55,7 +58,8 @@ object MainListDelegates {
 
     fun pictureOfDayDelegate(
             pictureOfDayPhotoItemClickListener: (PictureOfDayPhoto) -> Unit,
-            pictureOfDayPhotoItemLongClickListener: (PictureOfDayPhoto) -> Unit
+            pictureOfDayPhotoItemLongClickListener: (PictureOfDayPhoto) -> Unit,
+            pictureOfDayPhotoItemAddToFavouritesClickListener: (PictureOfDayPhoto) -> Boolean
     ) =
         adapterDelegateViewBinding<PictureOfDayItem, ListItem, FragmentImageOfDayBinding>(
             { inflater, container -> FragmentImageOfDayBinding.inflate(inflater, container, false) }
@@ -78,7 +82,7 @@ object MainListDelegates {
                 val options = getBaseRequestOptions()
                 Glide.with(binding.pictureOfTheDayImageView)
                     .applyDefaultRequestOptions(options)
-                    .load(uri)
+                    .load(item.picture.imageSrc)
                     .transition(withCrossFade())
                     .into(binding.pictureOfTheDayImageView)
 
@@ -89,6 +93,16 @@ object MainListDelegates {
                 binding.pictureOfTheDayImageView.setOnLongClickListener {
                     pictureOfDayPhotoItemLongClickListener(item.picture)
                     true
+                }
+
+                binding.addToFavoriteImage.setOnClickListener {
+                    if (item.picture.isFavourite) {
+                        binding.addToFavoriteImage.setImageResource(R.drawable.ic_star)
+                    }
+                    else {
+                        binding.addToFavoriteImage.setImageResource(R.drawable.ic_star__filled)
+                    }
+                    pictureOfDayPhotoItemAddToFavouritesClickListener(item.picture)
                 }
             }
 
@@ -101,13 +115,14 @@ object MainListDelegates {
 
     fun gridMarsPhotosListDelegate(
             marsPhotoItemClickListener: (MarsPhoto) -> Unit,
-            marsPhotoItemLongClickListener: (MarsPhoto) -> Unit
+            marsPhotoItemLongClickListener: (MarsPhoto) -> Unit,
+            marsPhotoItemAddToFavouritesClickListener: (MarsPhoto) -> Boolean
     ) =
         adapterDelegateViewBinding<GridListMarsPhotos, ListItem, FragmentGridMarsPhotoListBinding>(
             { inflater, container -> FragmentGridMarsPhotoListBinding.inflate(inflater, container, false) }
         ) {
 
-            val adapter = GridMarsPhotoListAdapter(marsPhotoItemClickListener, marsPhotoItemLongClickListener)
+            val adapter = GridMarsPhotoListAdapter(marsPhotoItemClickListener, marsPhotoItemLongClickListener, marsPhotoItemAddToFavouritesClickListener)
             binding.titleLabel.text = getString(R.string.new_mars_photos)
             binding.gridMarsPhotoRecyclerView.adapter = adapter
 
@@ -121,7 +136,8 @@ object MainListDelegates {
 
     fun gridMarsPhotosListItemDelegate(
             marsPhotoItemClickListener: (MarsPhoto) -> Unit,
-            marsPhotoItemLongClickListener: (MarsPhoto) -> Unit
+            marsPhotoItemLongClickListener: (MarsPhoto) -> Unit,
+            marsPhotoItemAddToFavouritesClickListener: (MarsPhoto) -> Boolean
     ) =
         adapterDelegateViewBinding<MarsPhoto, ListItem, FragmentGridMarsPhotoItemBinding>(
             { inflater, container -> FragmentGridMarsPhotoItemBinding.inflate(inflater, container, false) }
@@ -132,7 +148,7 @@ object MainListDelegates {
                 val options = getBaseRequestOptions()
                 Glide.with(binding.marsPhotoImageView)
                     .applyDefaultRequestOptions(options)
-                    .load(uri)
+                    .load(item.imageSrc)
                     .transition(withCrossFade())
                     .into(binding.marsPhotoImageView)
 
@@ -143,6 +159,16 @@ object MainListDelegates {
                 binding.marsPhotoImageView.setOnLongClickListener {
                     marsPhotoItemLongClickListener(item)
                     true
+                }
+
+                binding.addToFavoriteImage.setOnClickListener {
+                    if(item.isFavourite) {
+                        binding.addToFavoriteImage.setImageResource(R.drawable.ic_star)
+                    }
+                    else {
+                        binding.addToFavoriteImage.setImageResource(R.drawable.ic_star__filled)
+                    }
+                    marsPhotoItemAddToFavouritesClickListener(item)
                 }
             }
 
@@ -156,31 +182,35 @@ object MainListDelegates {
 
     fun favouritePhotosHorizontalListItemDelegate(
             favouritePhotosListItemClickListener: (FavouritePhoto) -> Unit,
-            favouritePhotosListItemLongClickListener: (FavouritePhoto) -> Unit
+            favouritePhotosListItemLongClickListener: (FavouritePhoto) -> Unit,
+            favouritePhotosListItemDeleteFromFavouritesClickListener: (FavouritePhoto) -> Boolean
     ) =
         adapterDelegateViewBinding<FavouritePhoto, ListItem, FragmentHorizontalListItemBinding>(
             { inflater, container -> FragmentHorizontalListItemBinding.inflate(inflater, container, false) }
         ) {
+            binding.addToFavoriteImage.setImageResource(R.drawable.ic_star__filled)
 
             bind {
-                binding.addToFavoriteImage.setImageResource(R.drawable.ic_star__filled)
                 val photo = item.photo
                 var uri: Uri? = null
-                when(photo) {
+                val src = when(photo) {
                     is MarsPhoto -> {
                         binding.solTextView.text = getString(R.string.sol) + " " + photo.solDate
                         uri = buildUTIFromURL(photo.imageSrc)
+                        photo.imageSrc
                     }
                     is PictureOfDayPhoto -> {
                         binding.solTextView.text = getString(R.string.nasa)
                         uri = buildUTIFromURL(photo.imageSrc)
+                        photo.imageSrc
                     }
+                    else -> ""
                 }
 
                 val options = getBaseRequestOptions()
                 Glide.with(binding.imageView)
                     .applyDefaultRequestOptions(options)
-                    .load(uri)
+                    .load(src)
                     .transition(withCrossFade())
                     .into(binding.imageView)
 
@@ -191,6 +221,11 @@ object MainListDelegates {
                 binding.imageView.setOnLongClickListener {
                     favouritePhotosListItemLongClickListener(item)
                     true
+                }
+
+                binding.addToFavoriteImage.setOnClickListener {
+                    binding.addToFavoriteImage.setImageResource(R.drawable.ic_star)
+                    favouritePhotosListItemDeleteFromFavouritesClickListener(item)
                 }
             }
 

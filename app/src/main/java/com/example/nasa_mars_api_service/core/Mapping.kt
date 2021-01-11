@@ -56,12 +56,13 @@ fun MarsPhoto.toMarsPhotoDB(): MarsPhotoDB {
 
 fun PictureOfDayVO.toPictureOfDayPhotoDB(): PictureOfDayPhotoDB {
     return PictureOfDayPhotoDB(
-            author = author,
-            date = date,
-            description = description,
-            title = title,
-            isFavourite = false,
-            imageSrc = imageSrc
+            description.hashCode(),
+            author,
+            title,
+            description,
+            date,
+            false,
+            imageSrc
     )
 }
 
@@ -71,6 +72,7 @@ fun PictureOfDayPhotoDB.toPictureOfDayPhoto(): PictureOfDayPhoto {
             author,
             title,
             description,
+            date,
             isFavourite,
             imageSrc
     )
@@ -91,7 +93,8 @@ fun FavoritePhotoDB.toFavouritePhoto(): FavouritePhoto {
                             author,
                             title,
                             description,
-                            isFavourite = false,
+                            this.earthDate,
+                            false,
                             imageSrc
                     )
             )
@@ -142,7 +145,9 @@ fun FavouritePhoto.toFavouritePhotoDB(): FavoritePhotoDB {
                     typeOfPhoto,
                     author = pictureOfDay.author,
                     title = pictureOfDay.title,
-                    description = pictureOfDay.description
+                    description = pictureOfDay.description,
+                    imageSrc = pictureOfDay.imageSrc,
+                    earthDate = pictureOfDay.date
             )
         }
     }
@@ -157,5 +162,21 @@ fun PictureOfDayPhoto.toFavouritePhoto(): FavouritePhoto {
             id,
             PhotoTypes.PICTURE_OF_DAY,
             photo = this
+    )
+}
+
+fun PictureOfDayPhoto.toFavouritePhotoDB(): FavoritePhotoDB {
+    return this.toFavouritePhoto().toFavouritePhotoDB()
+}
+
+fun PictureOfDayPhoto.toPictureOfDayPhotoDB(): PictureOfDayPhotoDB {
+    return PictureOfDayPhotoDB(
+            id,
+            author,
+            title,
+            description,
+            date,
+            isFavourite,
+            imageSrc
     )
 }

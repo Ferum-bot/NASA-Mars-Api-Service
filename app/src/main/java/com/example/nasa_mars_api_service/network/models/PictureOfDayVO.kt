@@ -27,7 +27,7 @@ data class PictureOfDayVO(
         @Json(name = "title")
         val title: String = " Title",
 
-        @Json(name = "image_src")
+        @Json(name = "url")
         val imageSrc: String = ""
 
 ): Parcelable

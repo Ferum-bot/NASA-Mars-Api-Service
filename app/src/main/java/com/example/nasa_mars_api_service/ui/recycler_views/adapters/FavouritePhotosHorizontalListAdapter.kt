@@ -14,10 +14,11 @@ import com.hannesdorfmann.adapterdelegates4.AsyncListDifferDelegationAdapter
  */
 class FavouritePhotosHorizontalListAdapter(
         favouritePhotoHorizontalListItemClickListener: (FavouritePhoto) -> Unit,
-        favouritePhotoHorizontalListItemLongClickListener: (FavouritePhoto) -> Unit
+        favouritePhotoHorizontalListItemLongClickListener: (FavouritePhoto) -> Unit,
+        favouritePhotoHorizontalListItemDeleteFromFavouritesClickListener: (FavouritePhoto) -> Boolean
 ): AsyncListDifferDelegationAdapter<ListItem>(BaseDiffCallBack) {
     init {
         delegatesManager
-            .addDelegate(MainListDelegates.favouritePhotosHorizontalListItemDelegate(favouritePhotoHorizontalListItemClickListener, favouritePhotoHorizontalListItemLongClickListener))
+            .addDelegate(MainListDelegates.favouritePhotosHorizontalListItemDelegate(favouritePhotoHorizontalListItemClickListener, favouritePhotoHorizontalListItemLongClickListener, favouritePhotoHorizontalListItemDeleteFromFavouritesClickListener))
     }
 }

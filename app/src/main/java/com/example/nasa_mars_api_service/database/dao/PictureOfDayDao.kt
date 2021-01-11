@@ -31,6 +31,9 @@ interface PictureOfDayDao {
     @Query("SELECT * FROM $TABLE_NAME ORDER BY id DESC LIMIT 1")
     suspend fun getLastPicture(): PictureOfDayPhotoDB
 
+    @Query("SELECT EXISTS (SELECT description FROM $TABLE_NAME WHERE description = :description)")
+    suspend fun isPictureExists(description: String): Boolean
+
     companion object {
         private const val TABLE_NAME = "picture_of_day_photo_table"
     }

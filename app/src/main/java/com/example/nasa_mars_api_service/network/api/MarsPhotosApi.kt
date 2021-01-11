@@ -14,7 +14,7 @@ import retrofit2.http.GET
 import retrofit2.http.Query
 
 private const val BASE_URL = "https://api.nasa.gov/"
-private const val API_KEY = "JjTahPnWKWIeylKeBRAbkVAbLMlYWKxFu1l0ukCU"
+private const val API_KEY = "njexF0tF61WibOUEkBY5JYd1uxQZBAT9uBiK5HhW"
 private const val BASE_ROVER = "mars-photos/api/v1/rovers/"
 
 private const val PICTURE_OF_DAY = "planetary/apod"
@@ -48,7 +48,13 @@ interface MarsPhotosService {
 
 
     @GET(PICTURE_OF_DAY)
-    suspend fun getPictureOfDayPhoto(): PictureOfDayVO
+    suspend fun getPictureOfDayPhoto(
+            @Query("api_key")
+            APIKey: String = API_KEY,
+
+            @Query("count")
+            count: Int = 1
+    ): List<PictureOfDayVO>
 
     @GET(CURIOSITY_ROVER)
     suspend fun getCuriosityMarsPhotosFromMarsSol(
@@ -63,7 +69,7 @@ interface MarsPhotosService {
 
             @Query("api_key")
             APIKey: String = API_KEY
-    ): List<MarsPhotoVO>
+    ): PhotosVO
 
     @GET(CURIOSITY_ROVER)
     suspend fun getCuriosityMarsPhotosFromEarthDate(
@@ -78,7 +84,7 @@ interface MarsPhotosService {
 
             @Query("api_key")
             APIKey: String = API_KEY
-    ): List<MarsPhotoVO>
+    ): PhotosVO
 
     @GET(OPPORTUNITY_ROVER)
     suspend fun getOpportunityMarsPhotosFromMarsSol(
@@ -93,7 +99,7 @@ interface MarsPhotosService {
 
             @Query("api_key")
             APIKey: String = API_KEY
-    ): List<MarsPhotoVO>
+    ): PhotosVO
 
     @GET(OPPORTUNITY_ROVER)
     suspend fun getOpportunityMarsPhotosFromEarthDate(
@@ -108,7 +114,7 @@ interface MarsPhotosService {
 
             @Query("api_key")
             APIKey: String = API_KEY
-    ): List<MarsPhotoVO>
+    ): PhotosVO
 
     @GET(SPIRIT_ROVER)
     suspend fun getSpiritMarsPhotosFromMarsSol(
@@ -123,7 +129,7 @@ interface MarsPhotosService {
 
             @Query("api_key")
             APIKey: String = API_KEY
-    ): List<MarsPhotoVO>
+    ): PhotosVO
 
     @GET(SPIRIT_ROVER)
     suspend fun getSpiritMarsPhotosFromEarthDate(
@@ -138,8 +144,20 @@ interface MarsPhotosService {
 
             @Query("api_key")
             APIKey: String = API_KEY
-    ): List<MarsPhotoVO>
+    ): PhotosVO
 
+
+    @GET(CURIOSITY_ROVER)
+    suspend fun getLastMarsPhotos(
+            @Query("page")
+            page: Int = 1,
+
+            @Query("sol")
+            sol: Int = 1000,
+
+            @Query("api_key")
+            APIKey: String = API_KEY
+    ): PhotosVO
 }
 
 object MarsPhotosApi {

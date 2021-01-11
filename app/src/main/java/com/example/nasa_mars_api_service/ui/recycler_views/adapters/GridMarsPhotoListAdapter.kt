@@ -14,10 +14,11 @@ import com.hannesdorfmann.adapterdelegates4.AsyncListDifferDelegationAdapter
  */
 class GridMarsPhotoListAdapter(
         marsPhotoItemClickListener: (MarsPhoto) -> Unit,
-        marsPhotoItemLongClickListener: (MarsPhoto) -> Unit
+        marsPhotoItemLongClickListener: (MarsPhoto) -> Unit,
+        marsPhotoItemAddToFavouritesClickListener: (MarsPhoto) -> Boolean
 ): AsyncListDifferDelegationAdapter<ListItem>(BaseDiffCallBack) {
     init {
         delegatesManager
-            .addDelegate(MainListDelegates.gridMarsPhotosListItemDelegate(marsPhotoItemClickListener, marsPhotoItemLongClickListener))
+            .addDelegate(MainListDelegates.gridMarsPhotosListItemDelegate(marsPhotoItemClickListener, marsPhotoItemLongClickListener, marsPhotoItemAddToFavouritesClickListener))
     }
 }

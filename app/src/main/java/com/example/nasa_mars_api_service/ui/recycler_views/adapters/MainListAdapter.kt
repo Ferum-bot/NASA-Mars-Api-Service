@@ -16,20 +16,29 @@ import com.hannesdorfmann.adapterdelegates4.AsyncListDifferDelegationAdapter
  * Project: NASA-Mars-API-Service
  */
 class MainListAdapter(
+        // Item click listeners
         favouritePhotoItemClickListener: (FavouritePhoto) -> Unit,
         pictureOfDayPhotoItemClickListener: (PictureOfDayPhoto) -> Unit,
         marsPhotoItemClickListener: (MarsPhoto) -> Unit,
 
+        // Item long click listeners
         favouritePhotoItemLongClickListener: (FavouritePhoto) -> Unit,
         pictureOfDayPhotoItemLongClickListener: (PictureOfDayPhoto) -> Unit,
-        marsPhotoItemLongClickListener: (MarsPhoto) -> Unit
+        marsPhotoItemLongClickListener: (MarsPhoto) -> Unit,
+
+        // Add to favourite click listeners
+        pictureOfDayPhotoItemAddToFavouritesClickListener: (PictureOfDayPhoto) -> Boolean,
+        marsPhotoItemAddToFavouritesClickListener: (MarsPhoto) -> Boolean,
+
+        // Delete from favourites click listener
+        favouritePhotoItemDeleteFromFavouritesClickListener: (FavouritePhoto) -> Boolean
 ): AsyncListDifferDelegationAdapter<ListItem>(BaseDiffCallBack) {
 
     init {
         delegatesManager
-            .addDelegate(MainListDelegates.pictureOfDayDelegate(pictureOfDayPhotoItemClickListener, pictureOfDayPhotoItemLongClickListener))
-            .addDelegate(MainListDelegates.favouritePhotosHorizontalListDelegate(favouritePhotoItemClickListener, favouritePhotoItemLongClickListener))
-            .addDelegate(MainListDelegates.gridMarsPhotosListDelegate(marsPhotoItemClickListener, marsPhotoItemLongClickListener))
+            .addDelegate(MainListDelegates.pictureOfDayDelegate(pictureOfDayPhotoItemClickListener, pictureOfDayPhotoItemLongClickListener, pictureOfDayPhotoItemAddToFavouritesClickListener))
+            .addDelegate(MainListDelegates.favouritePhotosHorizontalListDelegate(favouritePhotoItemClickListener, favouritePhotoItemLongClickListener, favouritePhotoItemDeleteFromFavouritesClickListener))
+            .addDelegate(MainListDelegates.gridMarsPhotosListDelegate(marsPhotoItemClickListener, marsPhotoItemLongClickListener, marsPhotoItemAddToFavouritesClickListener))
             .addDelegate(MainListLoadingDelegates.pictureOfDayLoadingDelegate())
             .addDelegate(MainListLoadingDelegates.favouritePhotosHorizontalListLoadingDelegate())
             .addDelegate(MainListLoadingDelegates.gridMarsPhotosListLoadingDelegate())

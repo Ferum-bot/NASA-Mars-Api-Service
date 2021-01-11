@@ -11,5 +11,5 @@ data class HorizontalFavouritePhotosListRecycler(
         val listOfItems: List<ListItem> = listOf()
 ): ListItem {
     override val idOfItem: Int
-        get() = title.hashCode()
+        get() = title.hashCode() - 2
 }

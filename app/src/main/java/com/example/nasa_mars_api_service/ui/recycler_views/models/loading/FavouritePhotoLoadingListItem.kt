@@ -15,5 +15,5 @@ data class FavouritePhotoLoadingListItem(
         val typeOfPhoto: PhotoTypes = PhotoTypes.MARS_PHOTO,
 ): ListItem {
     override val idOfItem: Int
-        get() = id
+        get() = -30
 }

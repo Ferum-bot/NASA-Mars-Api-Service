@@ -41,15 +41,23 @@ class MainRepository private constructor(
     }
 
     override suspend fun getLastPictureOfDayFromCash(): PictureOfDayPhoto {
-        TODO("Not yet implemented")
+        val result = localSourcePictureOfDayDao.getLastPicture()
+        return result.toPictureOfDayPhoto()
     }
 
     override suspend fun getLastMarsPhotos(): List<MarsPhoto> {
-        TODO("Not yet implemented")
+        val result = remoteSource.getLastMarsPhotos().listPhotos
+        updateNumberOfPhotosInPreferences(result)
+        localSourceMarsPhotos.insertPhotos(result.map { it.toMarsPhotoDB() })
+        return result.map { it.toMarsPhoto() }
     }
 
     override suspend fun getPictureOfDay(): PictureOfDayPhoto {
-        val result = remoteSource.getPictureOfDayPhoto()
+        val result = remoteSource.getPictureOfDayPhoto()[0]
+        if (!localSourcePictureOfDayDao.isPictureExists(result.description)) {
+            val number = preferences.getNumberOfAvailablePictureOfDayPhotos()
+            preferences.updateNumberOfAvailablePictureOfDayPhotos(number + 1)
+        }
         localSourcePictureOfDayDao.insertPicture(result.toPictureOfDayPhotoDB())
         return result.toPictureOfDayPhoto()
     }
@@ -68,43 +76,81 @@ class MainRepository private constructor(
         val result: List<MarsPhotoVO> = when(rover) {
             MarsRovers.CURIOSITY -> {
                 when(date) {
-                    MarsDateTypes.EARTH_DATE -> remoteSource.getCuriosityMarsPhotosFromEarthDate(page, date.date, camera.name)
-                    MarsDateTypes.MARS_SOL -> remoteSource.getCuriosityMarsPhotosFromMarsSol(page, date.date.toInt(), camera.name)
+                    MarsDateTypes.EARTH_DATE -> remoteSource.getCuriosityMarsPhotosFromEarthDate(page, date.date, camera.name).listPhotos
+                    MarsDateTypes.MARS_SOL -> remoteSource.getCuriosityMarsPhotosFromMarsSol(page, date.date.toInt(), camera.name).listPhotos
                 }
             }
             MarsRovers.OPPORTUNITY -> {
                 when(date) {
-                    MarsDateTypes.EARTH_DATE -> remoteSource.getOpportunityMarsPhotosFromEarthDate(page, date.date, camera.name)
-                    MarsDateTypes.MARS_SOL -> remoteSource.getOpportunityMarsPhotosFromMarsSol(page, date.date.toInt(), camera.name)
+                    MarsDateTypes.EARTH_DATE -> remoteSource.getOpportunityMarsPhotosFromEarthDate(page, date.date, camera.name).listPhotos
+                    MarsDateTypes.MARS_SOL -> remoteSource.getOpportunityMarsPhotosFromMarsSol(page, date.date.toInt(), camera.name).listPhotos
                 }
             }
             MarsRovers.SPIRIT -> {
                 when(date) {
-                    MarsDateTypes.EARTH_DATE -> remoteSource.getSpiritMarsPhotosFromEarthDate(page, date.date, camera.name)
-                    MarsDateTypes.MARS_SOL -> remoteSource.getSpiritMarsPhotosFromMarsSol(page, date.date.toInt(), camera.name)
+                    MarsDateTypes.EARTH_DATE -> remoteSource.getSpiritMarsPhotosFromEarthDate(page, date.date, camera.name).listPhotos
+                    MarsDateTypes.MARS_SOL -> remoteSource.getSpiritMarsPhotosFromMarsSol(page, date.date.toInt(), camera.name).listPhotos
                 }
             }
         }
+        updateNumberOfPhotosInPreferences(result)
         localSourceMarsPhotos.insertPhotos(result.map { it.toMarsPhotoDB() })
         return result.map { it.toMarsPhoto() }
     }
 
     override suspend fun addPhotoToFavourite(marsPhoto: MarsPhoto) {
+        if (!localSourceFavoritePhotos.isPhotoExists(marsPhoto.id)) {
+            val number = preferences.getNumberOfFavouritePhotos()
+            preferences.updateNumberOfFavouritePhotos(number + 1)
+        }
         localSourceFavoritePhotos.insertPhoto(marsPhoto.toFavouritePhotoDB())
     }
 
     override suspend fun addPhotoToFavourite(pictureOfDayPhoto: PictureOfDayPhoto) {
+        if (localSourceFavoritePhotos.isPhotoExists(pictureOfDayPhoto.id)) {
+            val number = preferences.getNumberOfFavouritePhotos()
+            preferences.updateNumberOfFavouritePhotos(number + 1)
+        }
+        localSourcePictureOfDayDao.insertPicture(pictureOfDayPhoto.toPictureOfDayPhotoDB())
         localSourceFavoritePhotos.insertPhoto(pictureOfDayPhoto.toFavouritePhoto().toFavouritePhotoDB())
     }
 
     override suspend fun addPhotoToFavourite(favouritePhoto: FavouritePhoto) {
+        if (localSourceFavoritePhotos.isPhotoExists(favouritePhoto.id)) {
+            val number = preferences.getNumberOfFavouritePhotos()
+            preferences.updateNumberOfFavouritePhotos(number + 1)
+        }
         localSourceFavoritePhotos.insertPhoto(favouritePhoto.toFavouritePhotoDB())
     }
 
     override suspend fun deleteFavouritePhoto(favouritePhoto: FavouritePhoto) {
+        deleteFavouritePhotoFromPreferences()
         localSourceFavoritePhotos.deletePhoto(favouritePhoto.toFavouritePhotoDB())
     }
 
+    override suspend fun deleteFavouritePhoto(marsPhoto: MarsPhoto) {
+        deleteFavouritePhotoFromPreferences()
+        localSourceFavoritePhotos.deletePhoto(marsPhoto.toFavouritePhotoDB())
+    }
+
+    override suspend fun deleteFavouritePhoto(pictureOfDayPhoto: PictureOfDayPhoto) {
+        deleteFavouritePhotoFromPreferences()
+        localSourceFavoritePhotos.deletePhoto(pictureOfDayPhoto.toFavouritePhotoDB())
+    }
+
+    private fun deleteFavouritePhotoFromPreferences() {
+        val number = preferences.getNumberOfFavouritePhotos()
+        preferences.updateNumberOfFavouritePhotos(number - 1)
+    }
+
+    private suspend fun updateNumberOfPhotosInPreferences(photos: List<MarsPhotoVO>) {
+        for (photo in photos) {
+            if (!localSourceMarsPhotos.isPhotoExists(photo.id)) {
+                val number = preferences.getNumberOfAvailableMarsPhotos()
+                preferences.updateNumberOfAvailableMarsPhotos(number + 1)
+            }
+        }
+    }
 
     companion object {
 
