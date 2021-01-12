@@ -11,6 +11,15 @@ data class RoverVO(
     val id: Int = 0,
 
     @Json(name = "name")
-    val name: String = "Curiosity"
+    val name: String = "Curiosity",
+
+    @Json(name = "landing_date")
+    val landingDate: String = "11.02.2002",
+
+    @Json(name = "launch_date")
+    val launchDate: String = "11.02.2002",
+
+    @Json(name = "status")
+    val status: String = "Active"
 
 ): Parcelable

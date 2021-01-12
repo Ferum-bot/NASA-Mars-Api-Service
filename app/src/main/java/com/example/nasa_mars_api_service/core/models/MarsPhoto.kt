@@ -15,7 +15,13 @@ data class MarsPhoto(
 
     val roverName: String = "Curiosity",
 
-    val isFavourite: Boolean = false
+    val isFavourite: Boolean = false,
+
+    val landingDate: String = "11.02.2002",
+
+    val launchDate: String = "11.02.2002",
+
+    val status: String = "Active"
 
 ): ListItem {
 

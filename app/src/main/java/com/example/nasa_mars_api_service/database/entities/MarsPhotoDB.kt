@@ -1,5 +1,6 @@
 package com.example.nasa_mars_api_service.database.entities
 
+import androidx.annotation.ColorLong
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
@@ -22,6 +23,15 @@ data class MarsPhotoDB(
     val cameraName: String = "FHAZ",
 
     @ColumnInfo(name = "rover_name")
-    val roverName: String = "Curiosity"
+    val roverName: String = "Curiosity",
+
+    @ColumnInfo(name = "landing_date")
+    val landingDate: String = "11.02.2002",
+
+    @ColumnInfo(name = "launch_date")
+    val launchDate: String = "11.02.2002",
+
+    @ColumnInfo(name = "status")
+    val status: String = "Active"
 
 )

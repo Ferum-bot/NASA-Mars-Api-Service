@@ -1,4 +1,4 @@
-package com.example.nasa_mars_api_service.ui.fragment.photo_view
+package com.example.nasa_mars_api_service.ui.fragment.mars_photo_description
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
@@ -7,19 +7,18 @@ import com.example.nasa_mars_api_service.repository.interfaces.BaseRepository
 /**
  * Created by Matvey Popov.
  * Date: 11.01.2021
- * Time: 21:33
+ * Time: 22:14
  * Project: NASA-Mars-API-Service
  */
-class PhotoViewViewModelFactory(
+class MarsPhotoDescriptionViewModelFactory(
         private val repository: BaseRepository
 ): ViewModelProvider.Factory {
 
     @Suppress("UNCHECKED_CAST")
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-        if(modelClass.isAssignableFrom(PhotoViewViewModel::class.java)) {
-            return PhotoViewViewModel(repository) as T
+        if (modelClass.isAssignableFrom(MarsPhotoDescriptionViewModel::class.java)) {
+            return MarsPhotoDescriptionViewModel(repository) as T
         }
         throw IllegalArgumentException("Unexpected view model to create: $modelClass")
     }
-
 }

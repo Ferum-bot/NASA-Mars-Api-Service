@@ -13,8 +13,14 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade
 import com.example.nasa_mars_api_service.R
 import com.example.nasa_mars_api_service.core.getBaseRequestOptions
+import com.example.nasa_mars_api_service.database.db.MainDatabase
 import com.example.nasa_mars_api_service.databinding.FragmentLoadMoreItemsBinding
 import com.example.nasa_mars_api_service.databinding.FragmentPhotoShowBinding
+import com.example.nasa_mars_api_service.network.api.MarsPhotosApi
+import com.example.nasa_mars_api_service.preferences.implementations.AppPreferences
+import com.example.nasa_mars_api_service.preferences.interfaces.BaseApplicationPreferences
+import com.example.nasa_mars_api_service.repository.implementations.MainRepository
+import com.example.nasa_mars_api_service.repository.interfaces.BaseRepository
 
 /**
  * Created by Matvey Popov.
@@ -42,7 +48,19 @@ class PhotoViewFragment: Fragment() {
     }
 
     private fun getViewModel() {
-        val factory = PhotoViewViewModelFactory()
+        val context = requireContext()
+        val preferences: BaseApplicationPreferences = AppPreferences.getInstance(context)
+        val database = MainDatabase.getInstance(context)
+        val remoteSource = MarsPhotosApi.marsPhotosService
+        val repository: BaseRepository = MainRepository.getInstance(
+                database.marsPhotoDao,
+                database.favoritePhotoDao,
+                database.pictureOfDayDao,
+                remoteSource,
+                preferences
+        )
+
+        val factory = PhotoViewViewModelFactory(repository)
         viewModel = ViewModelProvider(this, factory).get(PhotoViewViewModel::class.java)
     }
 

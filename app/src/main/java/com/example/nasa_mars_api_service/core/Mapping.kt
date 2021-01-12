@@ -17,7 +17,11 @@ fun MarsPhotoVO.toMarsPhoto(): MarsPhoto {
         earthDate,
         imageSrc,
         cameraVO.name,
-        rover.name
+        rover.name,
+        false,
+        rover.landingDate,
+        rover.launchDate,
+        rover.status
     )
 }
 
@@ -28,7 +32,10 @@ fun MarsPhotoVO.toMarsPhotoDB(): MarsPhotoDB {
         earthDate,
         imageSrc,
         cameraVO.name,
-        rover.name
+        rover.name,
+        rover.landingDate,
+        rover.launchDate,
+        rover.status
     )
 }
 
@@ -39,7 +46,11 @@ fun MarsPhotoDB.toMarsPhoto(): MarsPhoto {
         earthDate,
         imageSrc,
         cameraName,
-        roverName
+        roverName,
+        false,
+        landingDate,
+        launchDate,
+        status
     )
 }
 
@@ -50,7 +61,10 @@ fun MarsPhoto.toMarsPhotoDB(): MarsPhotoDB {
         earthDate,
         imageSrc,
         cameraName,
-        roverName
+        roverName,
+        landingDate,
+        launchDate,
+        status
     )
 }
 
@@ -178,5 +192,35 @@ fun PictureOfDayPhoto.toPictureOfDayPhotoDB(): PictureOfDayPhotoDB {
             date,
             isFavourite,
             imageSrc
+    )
+}
+
+fun MarsPhoto.isNotFavourite(): MarsPhoto {
+    return MarsPhoto(
+            id,
+            solDate,
+            earthDate,
+            imageSrc,
+            cameraName,
+            roverName,
+            false,
+            landingDate,
+            launchDate,
+            status
+    )
+}
+
+fun MarsPhoto.isFavourite(): MarsPhoto {
+    return MarsPhoto(
+            id,
+            solDate,
+            earthDate,
+            imageSrc,
+            cameraName,
+            roverName,
+            true,
+            landingDate,
+            launchDate,
+            status
     )
 }
