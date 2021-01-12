@@ -1,19 +1,15 @@
 package com.example.nasa_mars_api_service.ui.fragment.main_list
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.example.nasa_mars_api_service.R
 import com.example.nasa_mars_api_service.core.Variables
 import com.example.nasa_mars_api_service.core.enums.PhotoTypes

@@ -224,3 +224,27 @@ fun MarsPhoto.isFavourite(): MarsPhoto {
             status
     )
 }
+
+fun PictureOfDayPhoto.isNotFavourite(): PictureOfDayPhoto {
+    return PictureOfDayPhoto(
+            id,
+            author,
+            title,
+            description,
+            date,
+            false,
+            imageSrc
+    )
+}
+
+fun PictureOfDayPhoto.isFavourite(): PictureOfDayPhoto {
+    return PictureOfDayPhoto(
+            id,
+            author,
+            title,
+            description,
+            date,
+            true,
+            imageSrc
+    )
+}
