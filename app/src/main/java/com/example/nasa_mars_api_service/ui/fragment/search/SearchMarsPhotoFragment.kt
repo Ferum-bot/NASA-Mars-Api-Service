@@ -253,7 +253,7 @@ class SearchMarsPhotoFragment: Fragment() {
                 val editText = view as EditText
                 val date = editText.text.toString()
                 if (viewModel.isDateCorrect(date)) {
-                    viewModel.date = date
+                    viewModel.setNewDate(date)
                     chooseDateButtonState = ButtonStates.INFORMATION_CHOSEN
                 }
                 else {

@@ -105,6 +105,7 @@ class MainRepository private constructor(
             }
         }
         updateNumberOfPhotosInPreferences(result)
+        updateNumberOfSearchMarsPhotosPagesInPreferences(page)
         localSourceMarsPhotos.insertPhotos(result.map { it.toMarsPhotoDB() })
         return result.map { it.toMarsPhoto() }
     }
@@ -149,6 +150,10 @@ class MainRepository private constructor(
         localSourceFavoritePhotos.deletePhoto(pictureOfDayPhoto.toFavouritePhotoDB())
     }
 
+    override fun clearNumberOfAvailableSearchMarsPhotos() {
+        preferences.updateNumberOfAvailableSearchMarsPhotoPages(0)
+    }
+
     private fun deleteFavouritePhotoFromPreferences() {
         val number = preferences.getNumberOfFavouritePhotos()
         preferences.updateNumberOfFavouritePhotos(number - 1)
@@ -167,6 +172,13 @@ class MainRepository private constructor(
         val currentNumberOfPages = preferences.getNumberOfAvailableMarsPhotoPages()
         if (currentNumberOfPages < page) {
             preferences.updateNumberOfAvailableMarsPhotoPages(page)
+        }
+    }
+
+    private fun updateNumberOfSearchMarsPhotosPagesInPreferences(page: Int) {
+        val currentNumberOfPages = preferences.getNumberOfAvailableSearchMarsPhotoPages()
+        if (currentNumberOfPages < page) {
+            preferences.updateNumberOfAvailableSearchMarsPhotoPages(page)
         }
     }
 

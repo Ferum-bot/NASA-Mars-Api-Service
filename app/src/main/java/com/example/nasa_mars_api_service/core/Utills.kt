@@ -25,3 +25,13 @@ fun getBaseRequestOptions(): RequestOptions {
         .error(R.drawable.connection_error_image)
         .diskCacheStrategy(DiskCacheStrategy.ALL)
 }
+
+fun String.toSearchDateFormat(): String {
+    val listOfDates = this.split(".")
+    return listOfDates[2] + "-" + listOfDates[1] + "-" + listOfDates[0]
+}
+
+fun String.toDefaultDateFormat(): String {
+    val listOfDates = this.split("-")
+    return listOfDates[2] + "." + listOfDates[1] + "." + listOfDates[0]
+}

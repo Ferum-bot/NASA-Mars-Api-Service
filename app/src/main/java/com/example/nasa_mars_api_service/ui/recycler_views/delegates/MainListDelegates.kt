@@ -227,6 +227,10 @@ object MainListDelegates {
                     true
                 }
 
+                binding.imageView.setOnClickListener {
+                    favouritePhotosListItemClickListener(item)
+                }
+
                 binding.addToFavoriteImage.setOnClickListener {
                     binding.addToFavoriteImage.setImageResource(R.drawable.ic_star)
                     favouritePhotosListItemDeleteFromFavouritesClickListener(item)

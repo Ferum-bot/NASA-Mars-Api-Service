@@ -14,7 +14,7 @@ fun MarsPhotoVO.toMarsPhoto(): MarsPhoto {
     return MarsPhoto(
         id,
         solDate,
-        earthDate,
+        earthDate.toDefaultDateFormat(),
         imageSrc,
         cameraVO.name,
         rover.name,
@@ -29,7 +29,7 @@ fun MarsPhotoVO.toMarsPhotoDB(): MarsPhotoDB {
     return MarsPhotoDB(
         id,
         solDate,
-        earthDate,
+        earthDate.toDefaultDateFormat(),
         imageSrc,
         cameraVO.name,
         rover.name,
@@ -74,7 +74,7 @@ fun PictureOfDayVO.toPictureOfDayPhotoDB(): PictureOfDayPhotoDB {
             author,
             title,
             description,
-            date,
+            date.toDefaultDateFormat(),
             false,
             imageSrc
     )

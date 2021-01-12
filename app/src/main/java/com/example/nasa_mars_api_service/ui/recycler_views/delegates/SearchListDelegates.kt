@@ -21,7 +21,11 @@ import com.hannesdorfmann.adapterdelegates4.dsl.adapterDelegateViewBinding
 object SearchListDelegates {
 
 
-    fun marsPhotoListDelegate() =
+    fun marsPhotoListDelegate(
+            marsPhotoItemClickListener: (MarsPhoto) -> Unit,
+            marsPhotoImageLongClickListener: (MarsPhoto) -> Unit,
+            marsPhotoAddToFavouritesClickListener: (MarsPhoto) -> Unit
+    ) =
         adapterDelegateViewBinding<MarsPhoto, ListItem, FragmentSearchListItemBinding>(
             { inflater, container -> FragmentSearchListItemBinding.inflate(inflater, container, false) }
         ) {
@@ -39,6 +43,31 @@ object SearchListDelegates {
                     false -> {
                         binding.addToFavoriteImage.setImageResource(R.drawable.ic_star)
                     }
+                }
+
+                binding.materialCardViewLayout.setOnClickListener {
+                    marsPhotoItemClickListener(item)
+                }
+
+                binding.imageView.setOnClickListener {
+                    marsPhotoItemClickListener(item)
+                }
+
+                binding.imageView.setOnLongClickListener {
+                    marsPhotoImageLongClickListener(item)
+                    true
+                }
+
+                binding.addToFavoriteImage.setOnClickListener {
+                    when(item.isFavourite) {
+                        true -> {
+                            binding.addToFavoriteImage.setImageResource(R.drawable.ic_star)
+                        }
+                        false -> {
+                            binding.addToFavoriteImage.setImageResource(R.drawable.ic_star__filled)
+                        }
+                    }
+                    marsPhotoAddToFavouritesClickListener(item)
                 }
 
                 val uri = buildUTIFromURL(item.imageSrc)

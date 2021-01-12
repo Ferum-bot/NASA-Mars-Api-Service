@@ -45,6 +45,11 @@ class SearchMarsPhotoViewModel: ViewModel() {
         }
     }
 
+    fun setNewDate(date: String) {
+        this.date = date
+        this.dateType!!.date = date
+    }
+
     fun getChosenRoverCameraShortName(): String {
         if (camera != null) {
             return camera!!.name

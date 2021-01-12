@@ -1,26 +1,11 @@
-package com.example.nasa_mars_api_service.ui.recycler_views.delegates
+package com.example.nasa_mars_api_service.ui.recycler_views.delegates.loading
 
-import android.app.Activity
 import android.graphics.Color
-import android.net.Uri
-import android.view.View
-import com.bumptech.glide.Glide
-import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.example.nasa_mars_api_service.R
-import com.example.nasa_mars_api_service.core.buildUTIFromURL
-import com.example.nasa_mars_api_service.core.getBaseRequestOptions
-import com.example.nasa_mars_api_service.core.models.FavouritePhoto
-import com.example.nasa_mars_api_service.core.models.MarsPhoto
-import com.example.nasa_mars_api_service.core.models.PictureOfDayPhoto
 import com.example.nasa_mars_api_service.databinding.*
-import com.example.nasa_mars_api_service.ui.recycler_views.adapters.FavouritePhotosHorizontalListAdapter
-import com.example.nasa_mars_api_service.ui.recycler_views.adapters.GridMarsPhotoListAdapter
 import com.example.nasa_mars_api_service.ui.recycler_views.adapters.loading.FavouritePhotosHorizontalLoadingListAdapter
 import com.example.nasa_mars_api_service.ui.recycler_views.adapters.loading.GridMarsPhotoLoadingListAdapter
-import com.example.nasa_mars_api_service.ui.recycler_views.models.GridListMarsPhotos
-import com.example.nasa_mars_api_service.ui.recycler_views.models.HorizontalFavouritePhotosListRecycler
 import com.example.nasa_mars_api_service.ui.recycler_views.models.ListItem
-import com.example.nasa_mars_api_service.ui.recycler_views.models.PictureOfDayItem
 import com.example.nasa_mars_api_service.ui.recycler_views.models.loading.*
 import com.hannesdorfmann.adapterdelegates4.dsl.adapterDelegateViewBinding
 

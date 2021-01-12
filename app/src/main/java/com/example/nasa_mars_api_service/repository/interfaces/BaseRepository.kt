@@ -41,6 +41,8 @@ interface BaseRepository {
     fun getNumberOfCashedFavouritesPhotos(): Int
     fun getNumberOfCashedPictureOfDayPhotos(): Int
 
+    fun clearNumberOfAvailableSearchMarsPhotos()
+
     val numberOfAvailableMarsPhotosPages: Int
     val numberOfAvailableSearchMarsPhotosPages: Int
 }

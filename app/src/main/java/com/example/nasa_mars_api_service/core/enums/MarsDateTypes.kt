@@ -6,6 +6,6 @@ package com.example.nasa_mars_api_service.core.enums
  * Time: 23:02
  * Project: NASA-Mars-API-Service
  */
-enum class MarsDateTypes(val date: String = "") {
-    MARS_SOL, EARTH_DATE
+enum class MarsDateTypes(var date: String = "") {
+    MARS_SOL(), EARTH_DATE()
 }

@@ -1,6 +1,5 @@
 package com.example.nasa_mars_api_service.ui.recycler_views.adapters
 
-import android.view.View
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
 import com.example.nasa_mars_api_service.core.models.FavouritePhoto
@@ -9,7 +8,7 @@ import com.example.nasa_mars_api_service.core.models.PictureOfDayPhoto
 import com.example.nasa_mars_api_service.network.MarsApiStatus
 import com.example.nasa_mars_api_service.ui.recycler_views.call_backs.BaseDiffCallBack
 import com.example.nasa_mars_api_service.ui.recycler_views.delegates.MainListDelegates
-import com.example.nasa_mars_api_service.ui.recycler_views.delegates.MainListLoadingDelegates
+import com.example.nasa_mars_api_service.ui.recycler_views.delegates.loading.MainListLoadingDelegates
 import com.example.nasa_mars_api_service.ui.recycler_views.models.ListItem
 import com.hannesdorfmann.adapterdelegates4.AsyncListDifferDelegationAdapter
 
