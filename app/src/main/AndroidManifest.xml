@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.example.nasa_mars_api_service">
 
     <application
@@ -9,7 +10,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.NASAMarsAPIService"
-        android:name=".application.MainApplication">
+        android:name=".application.MainApplication"
+        android:networkSecurityConfig="@xml/network_security_config">
         <activity android:name=".ui.activity.MainActivity"
             android:screenOrientation="portrait">
             <intent-filter>
