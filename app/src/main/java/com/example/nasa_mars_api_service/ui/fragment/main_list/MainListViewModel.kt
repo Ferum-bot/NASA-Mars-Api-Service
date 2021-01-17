@@ -61,6 +61,8 @@ class MainListViewModel(
     val isNewPhotoLoading: LiveData<Boolean>
     get() = _isNewPhotoLoading
 
+    var isFirstLaunching: Boolean = true
+
     private fun postPictureOfDay(photo: PictureOfDayPhoto?) {
         if (photo == null) {
             val currentResult = _resultListForMainListAdapter.value!!.toMutableList()

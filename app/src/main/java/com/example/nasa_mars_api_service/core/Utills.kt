@@ -35,3 +35,31 @@ fun String.toDefaultDateFormat(): String {
     val listOfDates = this.split("-")
     return listOfDates[2] + "." + listOfDates[1] + "." + listOfDates[0]
 }
+
+fun getSearchDateFormatFrom(dayOfMonth: String, month: String, year: String): String {
+    val resultDate = StringBuilder()
+    resultDate.append(
+            when(dayOfMonth.length) {
+                1 -> "0$dayOfMonth"
+                2 -> dayOfMonth
+                else ->
+                    throw IllegalArgumentException("Invalid day of month: $dayOfMonth")
+            }
+    )
+    resultDate.append(".")
+    resultDate.append(
+            when(month.length) {
+                1 -> "0$month"
+                2 -> month
+                else ->
+                    throw IllegalArgumentException("Invalid month: $month")
+            }
+    )
+    resultDate.append(".")
+    resultDate.append(year)
+    return resultDate.toString()
+}
+
+fun getSearchDateFormatFrom(dayOfMonth: Int, month: Int, year: Int): String {
+    return getSearchDateFormatFrom(dayOfMonth.toString(), (month + 1).toString(), year.toString())
+}

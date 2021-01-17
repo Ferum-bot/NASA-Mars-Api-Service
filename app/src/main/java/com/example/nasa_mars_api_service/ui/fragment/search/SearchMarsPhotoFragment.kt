@@ -1,6 +1,8 @@
 package com.example.nasa_mars_api_service.ui.fragment.search
 
 import android.animation.LayoutTransition
+import android.app.DatePickerDialog
+import android.icu.util.Calendar
 import android.os.Bundle
 import android.text.Editable
 import android.view.KeyEvent
@@ -8,6 +10,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.DatePicker
 import android.widget.EditText
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
@@ -18,6 +21,7 @@ import com.example.nasa_mars_api_service.R
 import com.example.nasa_mars_api_service.core.enums.MarsDateTypes
 import com.example.nasa_mars_api_service.core.enums.MarsRovers
 import com.example.nasa_mars_api_service.core.enums.MarsRoversCamera
+import com.example.nasa_mars_api_service.core.getSearchDateFormatFrom
 import com.example.nasa_mars_api_service.databinding.FragmentSearchBinding
 import com.google.android.material.switchmaterial.SwitchMaterial
 
@@ -151,6 +155,11 @@ class SearchMarsPhotoFragment: Fragment() {
             }
         }
 
+        binding.selectDateButton.setOnClickListener {
+            callDatePickerFragment()
+        }
+
+
         binding.chooseRoverRadioGroup.setOnCheckedChangeListener { _, checkedId ->
             chooseRoverButtonState = ButtonStates.INFORMATION_CHOSEN
             chooseCameraButtonState = ButtonStates.INFORMATION_NOT_CHOSEN
@@ -168,6 +177,7 @@ class SearchMarsPhotoFragment: Fragment() {
                 }
             }
         }
+
 
         binding.chooseCameraRadioGroup.setOnCheckedChangeListener { _, checkedId ->
             when(checkedId) {
@@ -214,7 +224,8 @@ class SearchMarsPhotoFragment: Fragment() {
             when(isChecked) {
                 true -> {
                     viewModel.dateType = MarsDateTypes.EARTH_DATE
-                    binding.dateEditText.visibility = View.VISIBLE
+                    binding.dateEditText.visibility = View.GONE
+                    binding.selectDateButton.visibility = View.VISIBLE
                     if (binding.switchSol.isChecked) {
                         binding.switchSol.isChecked = false
                     }
@@ -222,6 +233,7 @@ class SearchMarsPhotoFragment: Fragment() {
                 false -> {
                     if (!binding.switchSol.isChecked) {
                         binding.dateEditText.visibility = View.GONE
+                        binding.selectDateButton.visibility = View.GONE
                     }
                 }
             }
@@ -232,6 +244,7 @@ class SearchMarsPhotoFragment: Fragment() {
                 true -> {
                     viewModel.dateType = MarsDateTypes.MARS_SOL
                     binding.dateEditText.visibility = View.VISIBLE
+                    binding.selectDateButton.visibility = View.GONE
                     if (binding.switchEathDate.isChecked) {
                         binding.switchEathDate.isChecked = false
                     }
@@ -239,6 +252,7 @@ class SearchMarsPhotoFragment: Fragment() {
                 false -> {
                     if (!binding.switchEathDate.isChecked) {
                         binding.dateEditText.visibility = View.GONE
+                        binding.selectDateButton.visibility = View.GONE
                     }
                 }
             }
@@ -353,6 +367,23 @@ class SearchMarsPhotoFragment: Fragment() {
         }
     }
 
+    private fun callDatePickerFragment() {
+        val calendar = java.util.Calendar.getInstance()
+        val year = calendar.get(java.util.Calendar.YEAR)
+        val month = calendar.get(java.util.Calendar.MONTH)
+        val day = calendar.get(java.util.Calendar.DAY_OF_MONTH)
+
+        val context = requireContext()
+        val datePickerDialog = DatePickerDialog(context, { view, year, month, dayOfMonth ->
+            val date = getSearchDateFormatFrom(dayOfMonth, month, year)
+            binding.selectDateButton.text = date
+            chooseDateButtonState = ButtonStates.INFORMATION_CHOSEN
+            viewModel.setNewDate(date)
+        },
+        year, month, day )
+        datePickerDialog.show()
+    }
+
     private fun hideRoverCameraChooseViews() {
         binding.chooseCameraRadioGroup.visibility = View.GONE
         binding.CHEMCAMRadioButton.visibility = View.GONE
@@ -367,6 +398,7 @@ class SearchMarsPhotoFragment: Fragment() {
     }
 
     private fun hideDateChooseViews() {
+        binding.selectDateButton.visibility = View.GONE
         binding.dateTypeLabel.visibility = View.GONE
         binding.switchSol.visibility = View.GONE
         binding.switchEathDate.visibility = View.GONE

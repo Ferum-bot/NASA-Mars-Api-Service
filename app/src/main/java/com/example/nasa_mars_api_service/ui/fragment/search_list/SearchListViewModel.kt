@@ -50,6 +50,10 @@ class SearchListViewModel(
         _resultListForRecyclerView.postValue(currentResult)
     }
 
+    private fun postEmptyListOfPhotos() {
+        _resultListForRecyclerView.postValue(emptyList())
+    }
+
     private fun addMarsPhotos(marsPhotos: List<MarsPhoto>) {
         var currentResult = _resultListForRecyclerView.value!!.toMutableList()
         currentResult.removeAt(currentResult.size - 1)
@@ -66,7 +70,8 @@ class SearchListViewModel(
                 val rover = photoToSearch.rover
                 val result = repository.searchMarsPhotos(1, date, rover, camera)
                 if (result.isEmpty()) {
-                    _errorMessage.postValue("That's all mars Photos!")
+                    _errorMessage.postValue("Nothing to show!")
+                    postEmptyListOfPhotos()
                     return@launch
                 }
                 postMarsPhotos(result)
@@ -74,6 +79,7 @@ class SearchListViewModel(
             catch (ex: Exception) {
                 Timber.e(ex)
                 _errorMessage.postValue(ex.message)
+                postEmptyListOfPhotos()
             }
         }
     }

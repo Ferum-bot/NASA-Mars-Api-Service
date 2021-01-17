@@ -121,7 +121,11 @@ class SearchListFragment: Fragment() {
     private fun setAllObservers() {
         viewModel.resultListForRecyclerView.observe(viewLifecycleOwner, Observer { newList->
             if (newList.isNotEmpty()) {
+                showRecyclerView()
                 searchListAdapter.items = newList
+            }
+            else {
+                showErrorImage()
             }
         })
 
@@ -158,6 +162,11 @@ class SearchListFragment: Fragment() {
         binding.errorImage.setImageResource(R.drawable.connection_error_image)
         binding.errorImage.visibility = View.VISIBLE
         binding.searchRecyclerView.visibility = View.GONE
+    }
+
+    private fun showRecyclerView() {
+        binding.errorImage.visibility = View.GONE
+        binding.searchRecyclerView.visibility = View.VISIBLE
     }
 
     private fun setBaseVisibilityForViews() {

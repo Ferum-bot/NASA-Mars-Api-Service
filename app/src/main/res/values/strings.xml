@@ -50,4 +50,5 @@
     <string name="incorrect_date_earth_date">Incorrect date: dd.mm.yyyy must be</string>
     <string name="choose_date_firstly">Choose Date firstly</string>
     <string name="choose_camera_firstly">Choose Camera firstly</string>
+    <string name="select_date">Select Date</string>
 </resources>

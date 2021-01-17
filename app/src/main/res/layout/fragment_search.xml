@@ -129,6 +129,21 @@
                     app:layout_constraintTop_toBottomOf="@id/switch_eath_date"
                     />
 
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/select_date_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/select_date"
+
+                    android:layout_marginTop="8dp"
+
+                    style="@style/BaseStyleForSearchFragmentButtons"
+
+                    app:layout_constraintTop_toBottomOf="@id/eath_date_label"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    />
+
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <com.google.android.material.button.MaterialButton

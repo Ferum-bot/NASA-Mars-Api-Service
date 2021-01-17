@@ -225,6 +225,10 @@ class MainListFragment: Fragment() {
     }
 
     private fun requirePhotosOrIssue() {
+        if (!viewModel.isFirstLaunching) {
+            return
+        }
+        viewModel.isFirstLaunching = false
         if (!Variables.isNetworkConnectionAvailable && viewModel.nothingIsAvailable()) {
             showErrorImage()
             showErrorMessage(getString(R.string.no_internet_connection))
