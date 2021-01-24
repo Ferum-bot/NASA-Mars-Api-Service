@@ -40,7 +40,15 @@ If you want to see layout files, go [here](https://github.com/Ferum-bot/NASA-Mar
 
 
 ## Some screenshots:
+<img src="screenshots/photo_2021-01-24_15-50-01.jpg" width="200px" height="400px">
+<img src="screenshots/photo_2021-01-24_15-50-03.jpg" width="200px" height="400px">
+<img src="screenshots/photo_2021-01-24_15-50-03 (2).jpg" width="200px" height="400px">
+<img src="screenshots/photo_2021-01-24_15-50-03 (3).jpg" width="200px" height="400px">
+<img src="screenshots/photo_2021-01-24_15-50-04.jpg" width="200px" height="400px">
+<img src="screenshots/photo_2021-01-24_15-50-04 (2).jpg" width="200px" height="400px">
+<img src="screenshots/photo_2021-01-24_15-50-04 (3).jpg" width="200px" height="400px">
 
+## Use case:
 
 ## License:
 
