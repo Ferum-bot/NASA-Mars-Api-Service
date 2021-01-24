@@ -96,7 +96,7 @@ class MainListViewModel(
     }
 
     private fun postNewMarsPhotos(photos: List<MarsPhoto>) {
-        var currentItem = if (photos.isEmpty()) {
+        val currentItem = if (photos.isEmpty()) {
             GridListMarsPhotos(
                     title = "Can't find new Mars photos!",
                     listOf()
@@ -222,9 +222,7 @@ class MainListViewModel(
     }
 
     fun refreshAllPhotos() {
-        if (nothingIsAvailable()) {
-            buildLoadingList()
-        }
+        buildLoadingList()
         getFavoritesPhoto()
         getPictureOfDay()
         getNewMarsPhotosFromNetwork()
@@ -323,10 +321,26 @@ class MainListViewModel(
             catch (ex: Exception) {
                 Timber.e(ex)
                 _statusNewMarsPhotos.postValue(MarsApiStatus.ERROR)
-                _messageDelete.postValue(ex.message)
+                _messageNewMarsPhotos.postValue(ex.message)
                 _isNewPhotoLoading.postValue(false)
             }
         }
+    }
+
+    fun messageNewMarsPhotosWasShown() {
+        _messageNewMarsPhotos.value = null
+    }
+
+    fun messageDeleteWasShown() {
+        _messageDelete.value = null
+    }
+
+    fun messageFavouritesPhotosWasShown() {
+        _messageFavouritesPhotos.value = null
+    }
+
+    fun messagePictureOfDayWasShown() {
+        _messagePictureOfDay.value = null
     }
 
     companion object {

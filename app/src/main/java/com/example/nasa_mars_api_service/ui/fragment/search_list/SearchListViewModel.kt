@@ -36,6 +36,8 @@ class SearchListViewModel(
     val statusForLoadingNewPhotos: LiveData<MarsApiStatus>
     get() = _statusForLoadingNewPhotos
 
+    var isFirstLaunching: Boolean = true
+
     private fun buildLoadingList() {
         _resultListForRecyclerView.postValue(listOf(
                 MarsPhotoSearchListLoadingItem(), MarsPhotoSearchListLoadingItem(), MarsPhotoSearchListLoadingItem(),
@@ -140,6 +142,10 @@ class SearchListViewModel(
                 _errorMessage.postValue(ex.message)
             }
         }
+    }
+
+    fun errorMessageWasShown() {
+        _errorMessage.value = null
     }
 
     override fun onCleared() {

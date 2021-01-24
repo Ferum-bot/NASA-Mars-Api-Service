@@ -183,7 +183,10 @@ class MainListFragment: Fragment() {
                 if (!Variables.isNetworkConnectionAvailable) {
                     showErrorMessage("Can't get Favourites photos: " + getString(R.string.no_internet_connection))
                 }
-                showErrorMessage("Can't get Favourites photos: $message")
+                else {
+                    showErrorMessage("Can't get Favourites photos: $message")
+                }
+                viewModel.messageFavouritesPhotosWasShown()
             }
         })
 
@@ -192,7 +195,10 @@ class MainListFragment: Fragment() {
                 if (!Variables.isNetworkConnectionAvailable) {
                     showErrorMessage("Can't get New Mars photos: " + getString(R.string.no_internet_connection))
                 }
-                showErrorMessage("Can't get New Mars photos: $message")
+                else {
+                    showErrorMessage("Can't get New Mars photos: $message")
+                }
+                viewModel.messageNewMarsPhotosWasShown()
             }
         })
 
@@ -200,11 +206,20 @@ class MainListFragment: Fragment() {
             if (message != null) {
                 if (!Variables.isNetworkConnectionAvailable) {
                     showErrorMessage("Can't get Picture of day: " + getString(R.string.no_internet_connection))
-                    return@Observer
                 }
-                showErrorMessage("Can't get Picture of day: $message")
+                else {
+                    showErrorMessage("Can't get Picture of day: $message")
+                }
+                viewModel.messagePictureOfDayWasShown()
             }
         })
+
+        viewModel.messageDelete.observe(viewLifecycleOwner) { message ->
+            if (message != null) {
+                showErrorMessage("Can't delete photo: $message")
+                viewModel.messageDeleteWasShown()
+            }
+        }
 
         viewModel.statusPictureOfDay.observe(viewLifecycleOwner, Observer { newStatus->
             when(newStatus) {

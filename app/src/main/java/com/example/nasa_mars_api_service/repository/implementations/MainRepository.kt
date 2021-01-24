@@ -87,19 +87,19 @@ class MainRepository private constructor(
         val result: List<MarsPhotoVO> = when(rover) {
             MarsRovers.CURIOSITY -> {
                 when(date) {
-                    MarsDateTypes.EARTH_DATE -> remoteSource.getCuriosityMarsPhotosFromEarthDate(page, date.date, camera.name).listPhotos
+                    MarsDateTypes.EARTH_DATE -> remoteSource.getCuriosityMarsPhotosFromEarthDate(page, date.date.toSearchDateFormat(), camera.name).listPhotos
                     MarsDateTypes.MARS_SOL -> remoteSource.getCuriosityMarsPhotosFromMarsSol(page, date.date.toInt(), camera.name).listPhotos
                 }
             }
             MarsRovers.OPPORTUNITY -> {
                 when(date) {
-                    MarsDateTypes.EARTH_DATE -> remoteSource.getOpportunityMarsPhotosFromEarthDate(page, date.date, camera.name).listPhotos
+                    MarsDateTypes.EARTH_DATE -> remoteSource.getOpportunityMarsPhotosFromEarthDate(page, date.date.toSearchDateFormat(), camera.name).listPhotos
                     MarsDateTypes.MARS_SOL -> remoteSource.getOpportunityMarsPhotosFromMarsSol(page, date.date.toInt(), camera.name).listPhotos
                 }
             }
             MarsRovers.SPIRIT -> {
                 when(date) {
-                    MarsDateTypes.EARTH_DATE -> remoteSource.getSpiritMarsPhotosFromEarthDate(page, date.date, camera.name).listPhotos
+                    MarsDateTypes.EARTH_DATE -> remoteSource.getSpiritMarsPhotosFromEarthDate(page, date.date.toSearchDateFormat(), camera.name).listPhotos
                     MarsDateTypes.MARS_SOL -> remoteSource.getSpiritMarsPhotosFromMarsSol(page, date.date.toInt(), camera.name).listPhotos
                 }
             }

@@ -71,6 +71,10 @@ class SearchListFragment: Fragment() {
     }
 
     private fun requireMarsPhotosOrIssue() {
+        if (!viewModel.isFirstLaunching) {
+            return
+        }
+        viewModel.isFirstLaunching = false
         if (!Variables.isNetworkConnectionAvailable) {
             showErrorMessage(getString(R.string.no_internet_connection))
             showErrorImage()
@@ -132,6 +136,7 @@ class SearchListFragment: Fragment() {
         viewModel.errorMessage.observe(viewLifecycleOwner, Observer { newMessage ->
             if (newMessage != null) {
                 showErrorMessage("Something went wrong: $newMessage")
+                viewModel.errorMessageWasShown()
             }
         })
     }
