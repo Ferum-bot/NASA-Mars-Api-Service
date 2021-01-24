@@ -50,6 +50,12 @@ If you want to see layout files, go [here](https://github.com/Ferum-bot/NASA-Mar
 
 ## Use case:
 
+## How to install:
+### First variant:
+Clone repository and run project in Android Studio.
+### Second variant:
+Download apk file here.
+
 ## License:
 
 https://github.com/Ferum-bot/UselessAndroidApps/blob/main/LICENSE
